@@ -130,3 +130,7 @@ cython_debug/
 
 # macOS
 .DS_Store
+
+#audio files
+.mp3
+.wav
