@@ -57,8 +57,8 @@ voice_assistant/
   Using `conda`:
 
 ```shell
-    conda create --name jarvis-voice-assistant python=3.9
-    conda activate jarvis-voice-assistant
+    conda create --name verbi python=3.9
+    conda activate verbi
 ```
 3.  📦 **Install the required packages**
 
