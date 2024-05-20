@@ -119,7 +119,7 @@ Edit config.py to select the models you want to use:
 
 ## Detailed Module Descriptions  📘
 
-- **`run_voice_assistant.py`**: Main script to run the voice assistant.
+- **`run_verbi.py`**: Main script to run the voice assistant.
 - **`voice_assistant/config.py`**: Manages configuration settings and API keys.
 - **`voice_assistant/api_key_manager.py`**: Handles retrieval of API keys based on configured models.
 - **`voice_assistant/audio.py`**: Functions for recording and playing audio.
