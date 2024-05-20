@@ -35,7 +35,11 @@ def main():
             
             # Transcribe the audio file
             user_input = transcribe_audio(Config.TRANSCRIPTION_MODEL, transcription_api_key, 'test.wav', Config.LOCAL_MODEL_PATH)
-            logging.info(Fore.GREEN + "You said: " + user_input)
+            logging.info(Fore.GREEN + "You said: " + user_input + Fore.RESET)
+            
+            # Check if the user wants to exit the program
+            if "goodbye" in user_input.lower() or "arrivederci" in user_input.lower():
+                break
 
             # Append the user's input to the chat history
             chat_history.append({"role": "user", "content": user_input})
@@ -45,7 +49,7 @@ def main():
 
             # Generate a response
             response_text = generate_response(Config.RESPONSE_MODEL, response_api_key, chat_history, Config.LOCAL_MODEL_PATH)
-            logging.info(Fore.CYAN + "Response: " + response_text)
+            logging.info(Fore.CYAN + "Response: " + response_text + Fore.RESET)
 
             # Append the assistant's response to the chat history
             chat_history.append({"role": "assistant", "content": response_text})

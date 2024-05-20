@@ -24,7 +24,10 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
             with open(audio_file_path, "rb") as audio_file:
                 transcription = client.audio.transcriptions.create(
                     model="whisper-1",
-                    file=audio_file
+                    file=audio_file,
+
+                    # Add language model parameter to improve transcription accuracy
+                    language='en'
                 )
             return transcription.text
         elif model == 'groq':
@@ -32,7 +35,9 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
             with open(audio_file_path, "rb") as audio_file:
                 transcription = client.audio.transcriptions.create(
                     model="whisper-large-v3",
-                    file=audio_file
+                    file=audio_file,
+                    # Add language model parameter to improve transcription accuracy
+                    language='en'
                 )
             return transcription.text
         elif model == 'deepgram':

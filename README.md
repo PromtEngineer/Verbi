@@ -43,7 +43,7 @@ voice_assistant/
 1. 📥 **Clone the repository**
 
 ```shell
-   git clone https://github.com/yourusername/voice_assistant.git
+   git clone https://github.com/PromtEngineer/Verbi.git
    cd voice_assistant
 ```
 2. 🐍 **Set up a virtual environment**
@@ -57,7 +57,7 @@ voice_assistant/
   Using `conda`:
 
 ```shell
-    conda create --name verbi python=3.9
+    conda create --name verbi python=3.10
     conda activate verbi
 ```
 3.  📦 **Install the required packages**
