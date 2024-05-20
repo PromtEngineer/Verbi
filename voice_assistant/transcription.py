@@ -4,6 +4,7 @@ from openai import OpenAI
 from groq import Groq
 from deepgram import Deepgram
 import logging
+import requests
 
 def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
     """
@@ -47,6 +48,26 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
             # with open(audio_file_path, "rb") as audio_file:
             #     transcription = client.transcription.pre_recorded(audio_file, {'punctuate': True, 'model': "whisper"})
             # return transcription['results']['channels'][0]['alternatives'][0]['transcript']
+        elif model == 'fastwhisperapi':
+            url = "http://localhost:8000/v1/transcriptions"
+        
+            files = {
+                'file': (audio_file_path, open(audio_file_path, 'rb')),
+            }
+            data = {
+                'model': "base", # possible values: tiny, base, small, medium, large
+                'language': "en", # possible values language ISO codes. Set None for auto detection
+                'initial_prompt': None, # optional initial prompt for the model useful for context and spelling
+                'vad_filter': True, # set to True to avoid model transcription allucinations on silence
+            }
+            headers = {
+                'Authorization': 'Bearer dummy_api_key',
+                'Contetnt-Type': 'multipart/form-data'
+            }
+            
+            response = requests.post(url, files=files, data=data, headers=headers)
+            response_json = response.json()
+            return response_json.get('text', 'No text found in the response.')
         elif model == 'local':
             # Placeholder for local STT model transcription
             return "Transcribed text from local model"

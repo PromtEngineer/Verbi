@@ -35,8 +35,13 @@ def main():
             
             # Transcribe the audio file
             user_input = transcribe_audio(Config.TRANSCRIPTION_MODEL, transcription_api_key, 'test.wav', Config.LOCAL_MODEL_PATH)
-            logging.info(Fore.GREEN + "You said: " + user_input + Fore.RESET)
             
+            # Check if the transcription is empty and restart the recording if it is. This check will avoid empty requests if vad_filter is used in the fastwhisperapi.
+            if not user_input:
+                logging.info("No transcription was returned. Starting recording again.")
+                continue
+            logging.info(Fore.GREEN + "You said: " + user_input + Fore.RESET)
+
             # Check if the user wants to exit the program
             if "goodbye" in user_input.lower() or "arrivederci" in user_input.lower():
                 break
