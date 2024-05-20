@@ -1,17 +1,17 @@
-## JARVIS - Voice Assistant 🎙️
+# JARVIS - Voice Assistant 🎙️
 
-### Motivation ✨✨✨
+## Motivation ✨✨✨
 
 Welcome to the Voice Assistant project! 🎙️ Our goal is to create a modular voice assistant application that allows you to experiment with state-of-the-art (SOTA) models for various components. The modular structure provides flexibility, enabling you to pick and choose between different SOTA models for transcription, response generation, and text-to-speech (TTS). This approach facilitates easy testing and comparison of different models, making it an ideal platform for research and development in voice assistant technologies. Whether you're a developer, researcher, or enthusiast, this project is for you!
 
-### Features 🧰
+## Features 🧰
 
 - **Modular Design**: Easily switch between different models for transcription, response generation, and TTS.
 - **Support for Multiple APIs**: Integrates with OpenAI, Groq, and Deepgram APIs, along with placeholders for local models.
 - **Audio Recording and Playback**: Record audio from the microphone and play generated speech.
 - **Configuration Management**: Centralized configuration in `config.py` for easy setup and management.
 
-### Project Structure 📂
+## Project Structure 📂
 
 ```plaintext
 voice_assistant/
@@ -31,7 +31,7 @@ voice_assistant/
 └── README.md
 ```
 
-### Setup Instructions  📋
+## Setup Instructions  📋
 
 #### Prerequisites ✅
 
@@ -96,7 +96,7 @@ Edit config.py to select the models you want to use:
 ```shell
    python run_voice_assistant.py
 ```
-### Model Options ⚙️
+## Model Options ⚙️
 
 #### Transcription Models  🎤
 
@@ -117,7 +117,7 @@ Edit config.py to select the models you want to use:
 - **Deepgram**: Uses Deepgram's TTS model with the "aura-angus-en" voice.
 - **Local**: Placeholder for a local TTS model.
 
-### Detailed Module Descriptions  📘
+## Detailed Module Descriptions  📘
 
 - **`run_voice_assistant.py`**: Main script to run the voice assistant.
 - **`voice_assistant/config.py`**: Manages configuration settings and API keys.
@@ -129,7 +129,7 @@ Edit config.py to select the models you want to use:
 - **`voice_assistant/utils.py`**: Contains utility functions like deleting files.
 - **`voice_assistant/__init__.py`**: Initializes the `voice_assistant` package.
 
-### Roadmap 🛤️🛤️🛤️
+## Roadmap 🛤️🛤️🛤️
 
 Here's what's next for the Voice Assistant project:
 
@@ -138,7 +138,7 @@ Here's what's next for the Voice Assistant project:
 3. **Add Filler Audios**: Include background or filler audios while waiting for model responses to enhance user experience.
 4. **Add Support for Local Models Across the Board**: Expand support for local models in transcription, response generation, and TTS.
 
-### Contributing 🤝
+## Contributing 🤝
 
 We welcome contributions from the community! If you'd like to help improve this project, please follow these steps:
 
@@ -148,7 +148,5 @@ We welcome contributions from the community! If you'd like to help improve this 
 4. Push to the branch (`git push origin feature-branch`).
 5. Open a pull request detailing your changes.
 
-### License
 
-This project is licensed under the MIT License.
 
