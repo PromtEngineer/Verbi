@@ -22,7 +22,7 @@ class Config:
     # Model selection
     TRANSCRIPTION_MODEL = 'fastwhisperapi'  # possible values: openai, groq, fastwhisperapi
     RESPONSE_MODEL = 'groq'       # possible values: openai, groq
-    TTS_MODEL = 'openai'        # possible values: openai, deepgram
+    TTS_MODEL = 'deepgram'        # possible values: openai, deepgram
 
     # API keys and paths
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -38,8 +38,8 @@ class Config:
         Raises:
         ValueError: If a required environment variable is not set.
         """
-        if Config.TRANSCRIPTION_MODEL not in ['openai', 'groq', 'deepgram', 'local']:
-            raise ValueError("Invalid TRANSCRIPTION_MODEL. Must be one of ['openai', 'groq', 'deepgram', 'local']")
+        if Config.TRANSCRIPTION_MODEL not in ['openai', 'groq', 'deepgram', 'fastwhisperapi', 'local']:
+            raise ValueError("Invalid TRANSCRIPTION_MODEL. Must be one of ['openai', 'groq', 'deepgram', 'fastwhisperapi', 'local']")
         if Config.RESPONSE_MODEL not in ['openai', 'groq', 'local']:
             raise ValueError("Invalid RESPONSE_MODEL. Must be one of ['openai', 'groq', 'local']")
         if Config.TTS_MODEL not in ['openai', 'deepgram', 'local']:
