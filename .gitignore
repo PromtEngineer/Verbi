@@ -132,5 +132,5 @@ cython_debug/
 .DS_Store
 
 #audio files
-.mp3
-.wav
+*.mp3
+*.wav
