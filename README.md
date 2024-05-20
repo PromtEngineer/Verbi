@@ -1,4 +1,4 @@
-# JARVIS - Voice Assistant 🎙️
+# VERBI - Voice Assistant 🎙️
 
 ## Motivation ✨✨✨
 
