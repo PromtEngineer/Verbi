@@ -21,7 +21,7 @@ class Config:
     """
     # Model selection
     TRANSCRIPTION_MODEL = 'fastwhisperapi'  # possible values: openai, groq, deepgram, fastwhisperapi
-    RESPONSE_MODEL = 'openai'       # possible values: openai, groq
+    RESPONSE_MODEL = 'groq'       # possible values: openai, groq
     TTS_MODEL = 'deepgram'        # possible values: openai, deepgram
 
     # API keys and paths

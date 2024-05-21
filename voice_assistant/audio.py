@@ -4,6 +4,7 @@ import speech_recognition as sr
 import pygame
 import time
 import logging
+import keyboard
 
 def record_audio(file_path, timeout=10, phrase_time_limit=None, retries=3, energy_threshold=2000, pause_threshold=1):
     """
@@ -51,7 +52,10 @@ def play_audio(file_path):
         pygame.mixer.music.load(file_path)
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy():
-            time.sleep(1)
+            if keyboard.is_pressed('space'): 
+                pygame.mixer.music.stop()
+                break
+            time.sleep(0.1)
         pygame.mixer.quit()
     except pygame.error as e:
         logging.error(f"Failed to play audio: {e}")

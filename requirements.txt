@@ -25,3 +25,4 @@ groq
 python-dotenv
 colorama
 requests
+keyboard
