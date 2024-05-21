@@ -44,7 +44,7 @@ voice_assistant/
 
 ```shell
    git clone https://github.com/PromtEngineer/Verbi.git
-   cd voice_assistant
+   cd Verbi
 ```
 2. 🐍 **Set up a virtual environment**
 

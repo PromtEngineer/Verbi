@@ -2,7 +2,12 @@
 
 from openai import OpenAI
 from groq import Groq
-from deepgram import Deepgram
+from deepgram import (
+    DeepgramClient,
+    PrerecordedOptions,
+    FileSource,
+)
+import json
 import logging
 import requests
 
@@ -42,12 +47,41 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
                 )
             return transcription.text
         elif model == 'deepgram':
-            # Placeholder for Deepgram STT model transcription
-            pass
-            # client = Deepgram(api_key=api_key)
-            # with open(audio_file_path, "rb") as audio_file:
-            #     transcription = client.transcription.pre_recorded(audio_file, {'punctuate': True, 'model': "whisper"})
-            # return transcription['results']['channels'][0]['alternatives'][0]['transcript']
+            try:
+                # STEP 1 Create a Deepgram client using the API key
+                deepgram = DeepgramClient(api_key)
+
+                with open(audio_file_path, "rb") as file:
+                    buffer_data = file.read()
+
+                payload: FileSource = {
+                    "buffer": buffer_data,
+                }
+
+                #STEP 2: Configure Deepgram options for audio analysis
+                options = PrerecordedOptions(
+                    model="nova-2",
+                    smart_format=True,
+                )
+ 
+                # STEP 3: Call the transcribe_file method with the text payload and options
+                response = deepgram.listen.prerecorded.v("1").transcribe_file(payload, options)
+
+                # STEP 4: Print and parse the response
+                response_json = response.to_json()
+
+                # Parse the JSON string into a Python dictionary
+                data = json.loads(response_json)
+
+                # Extract and print the transcript
+                transcript = data['results']['channels'][0]['alternatives'][0]['transcript']
+
+                # Return the transcript
+                return transcript
+
+            except Exception as e:
+                print(f"Exception: {e}")
+        
         elif model == 'fastwhisperapi':
             url = "http://localhost:8000/v1/transcriptions"
         
