@@ -97,24 +97,26 @@ Edit config.py to select the models you want to use:
    python run_voice_assistant.py
 ```
 5. 🎤 **Install FastWhisperAPI**
-(Optional step if you need a local transcription model)
 
-***Clone the repository***
-```shell
-   cd..
-   git clone https://github.com/3choff/FastWhisperAPI.git
-   cd FastWhisperAPI
-```
-***Build a Docker container:***
-```shell
-   docker build -t fastwhisperapi .
-```
-***Run the container***
-```shell
-   docker run -p 8000:8000 fastwhisperapi
-```
-***Alternative Run Methods***
-The API can also run directly on a local machine or in Google Colab. Refer to the repository documentation for these methods: https://github.com/3choff/FastWhisperAPI/blob/main/README.md
+   _Optional step if you need a local transcription model_
+
+   ***Clone the repository***
+   ```shell
+      cd..
+      git clone https://github.com/3choff/FastWhisperAPI.git
+      cd FastWhisperAPI
+   ```
+   ***Build a Docker container:***
+   ```shell
+      docker build -t fastwhisperapi .
+   ```
+   ***Run the container***
+   ```shell
+      docker run -p 8000:8000 fastwhisperapi
+   ```
+   ***Alternative Setup and Run Methods***
+
+   The API can also run directly on a local machine or in Google Colab. Refer to the repository documentation for these methods: https://github.com/3choff/FastWhisperAPI/blob/main/README.md
 
 ## Model Options ⚙️
 
