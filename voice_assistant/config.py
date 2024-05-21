@@ -20,8 +20,8 @@ class Config:
     LOCAL_MODEL_PATH (str): Path to the local model.
     """
     # Model selection
-    TRANSCRIPTION_MODEL = 'deepgram'  # possible values: openai, groq, deepgram, fastwhisperapi
-    RESPONSE_MODEL = 'groq'       # possible values: openai, groq
+    TRANSCRIPTION_MODEL = 'fastwhisperapi'  # possible values: openai, groq, deepgram, fastwhisperapi
+    RESPONSE_MODEL = 'openai'       # possible values: openai, groq
     TTS_MODEL = 'deepgram'        # possible values: openai, deepgram
 
     # API keys and paths
