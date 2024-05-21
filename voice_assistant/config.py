@@ -20,9 +20,9 @@ class Config:
     LOCAL_MODEL_PATH (str): Path to the local model.
     """
     # Model selection
-    TRANSCRIPTION_MODEL = 'openai'  # possible values: openai, groq
-    RESPONSE_MODEL = 'openai'       # possible values: openai, groq
-    TTS_MODEL = 'openai'        # possible values: openai, deepgram
+    TRANSCRIPTION_MODEL = 'deepgram'  # possible values: openai, groq
+    RESPONSE_MODEL = 'groq'       # possible values: openai, groq
+    TTS_MODEL = 'deepgram'        # possible values: openai, deepgram
 
     # API keys and paths
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
