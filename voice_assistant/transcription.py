@@ -84,7 +84,7 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
         
         elif model == 'fastwhisperapi':
             url = "http://localhost:8000/v1/transcriptions"
-        
+            
             files = {
                 'file': (audio_file_path, open(audio_file_path, 'rb')),
             }

@@ -106,6 +106,20 @@ Edit config.py to select the models you want to use:
       git clone https://github.com/3choff/FastWhisperAPI.git
       cd FastWhisperAPI
    ```
+   ***Install the required packages:***
+   ```shell
+      pip install -r requirements.txt
+   ```
+   ***Run the API***
+   ```shell
+      fastapi run main.py
+   ```
+   ***Alternative Setup and Run Methods***
+
+   The API can also run directly on a Docker container or in Google Colab.
+
+   ***Docker:***
+
    ***Build a Docker container:***
    ```shell
       docker build -t fastwhisperapi .
@@ -114,9 +128,7 @@ Edit config.py to select the models you want to use:
    ```shell
       docker run -p 8000:8000 fastwhisperapi
    ```
-   ***Alternative Setup and Run Methods***
-
-   The API can also run directly on a local machine or in Google Colab. Refer to the repository documentation for these methods: https://github.com/3choff/FastWhisperAPI/blob/main/README.md
+   Refer to the repository documentation for the Google Colab method: https://github.com/3choff/FastWhisperAPI/blob/main/README.md
 
 ## Model Options ⚙️
 
