@@ -1,5 +1,5 @@
 # voice_assistant/transcription.py
-
+from colorama import Fore, init
 from openai import OpenAI
 from groq import Groq
 from deepgram import (
@@ -10,13 +10,29 @@ from deepgram import (
 import json
 import logging
 import requests
+import time
 
+fast_url = "http://localhost:8000"
+checked_fastwhisperapi = False
+
+def check_fastwhisperapi():
+    global checked_fastwhisperapi
+    global fast_url
+    if not checked_fastwhisperapi:
+        infopoint = fast_url + "/info"
+        try:
+            response = requests.get(infopoint)
+            if response.status_code != 200:
+                raise Exception("FastWhisperAPI is not running")
+        except Exception:
+            raise Exception("FastWhisperAPI is not running")
+        checked_fastwhisperapi = True
 def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
     """
     Transcribe an audio file using the specified model.
     
     Args:
-    model (str): The model to use for transcription ('openai', 'groq', 'deepgram', 'local').
+    model (str): The model to use for transcription ('openai', 'groq', 'deepgram', 'fastwhisper', 'local').
     api_key (str): The API key for the transcription service.
     audio_file_path (str): The path to the audio file to transcribe.
     local_model_path (str): The path to the local model (if applicable).
@@ -24,6 +40,8 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
     Returns:
     str: The transcribed text.
     """
+    # measure the transcription response time
+    # start_time = time.time()
     try:
         if model == 'openai':
             client = OpenAI(api_key=api_key)
@@ -83,8 +101,11 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
                 print(f"Exception: {e}")
         
         elif model == 'fastwhisperapi':
-            url = "http://localhost:8000/v1/transcriptions"
-            
+            global fast_url
+            check_fastwhisperapi()
+
+            endpoint = fast_url + "/v1/transcriptions"
+
             files = {
                 'file': (audio_file_path, open(audio_file_path, 'rb')),
             }
@@ -96,10 +117,9 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
             }
             headers = {
                 'Authorization': 'Bearer dummy_api_key',
-                'Contetnt-Type': 'multipart/form-data'
+                
             }
-            
-            response = requests.post(url, files=files, data=data, headers=headers)
+            response = requests.post(endpoint, files=files, data=data, headers=headers)
             response_json = response.json()
             return response_json.get('text', 'No text found in the response.')
         elif model == 'local':
@@ -107,6 +127,11 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
             return "Transcribed text from local model"
         else:
             raise ValueError("Unsupported transcription model")
+
     except Exception as e:
-        logging.error(f"Failed to transcribe audio: {e}")
-        return "Error in transcribing audio"
+        logging.error(Fore.RED + f"Failed to transcribe audio: {e}" + Fore.RESET)
+        raise Exception("Error in transcribing audio")
+    # finally:
+    #     # end the transcription response time
+    #     time_difference = time.time() - start_time
+    #     logging.info(Fore.YELLOW + f"Time taken to transcribe: {time_difference} seconds" + Fore.RESET)

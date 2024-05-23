@@ -35,7 +35,7 @@ def main():
             
             # Transcribe the audio file
             user_input = transcribe_audio(Config.TRANSCRIPTION_MODEL, transcription_api_key, 'test.wav', Config.LOCAL_MODEL_PATH)
-            
+
             # Check if the transcription is empty and restart the recording if it is. This check will avoid empty requests if vad_filter is used in the fastwhisperapi.
             if not user_input:
                 logging.info("No transcription was returned. Starting recording again.")
@@ -79,7 +79,7 @@ def main():
             # delete_file(output_file)
 
         except Exception as e:
-            logging.error(Fore.RED + f"An error occurred: {e}")
+            logging.error(Fore.RED + f"An error occurred: {e}" + Fore.RESET)
             delete_file('test.wav')
             if 'output_file' in locals():
                 delete_file(output_file)
