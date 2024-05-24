@@ -1,5 +1,11 @@
 # VERBI - Voice Assistant 🎙️
 
+[![GitHub Stars](https://img.shields.io/github/stars/PromtEngineer/Verbi?style=social)](https://github.com/PromtEngineer/Verbi/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/PromtEngineer/Verbi?style=social)](https://github.com/PromtEngineer/Verbi/network/members)
+[![GitHub Issues](https://img.shields.io/github/issues/PromtEngineer/Verbi)](https://github.com/PromtEngineer/Verbi/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/PromtEngineer/Verbi)](https://github.com/PromtEngineer/Verbi/pulls)
+[![License](https://img.shields.io/github/license/PromtEngineer/Verbi)](https://github.com/PromtEngineer/Verbi/blob/main/LICENSE)
+
 ## Motivation ✨✨✨
 
 Welcome to the Voice Assistant project! 🎙️ Our goal is to create a modular voice assistant application that allows you to experiment with state-of-the-art (SOTA) models for various components. The modular structure provides flexibility, enabling you to pick and choose between different SOTA models for transcription, response generation, and text-to-speech (TTS). This approach facilitates easy testing and comparison of different models, making it an ideal platform for research and development in voice assistant technologies. Whether you're a developer, researcher, or enthusiast, this project is for you!
