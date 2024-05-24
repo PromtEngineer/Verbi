@@ -35,7 +35,16 @@ def main():
             
             # Transcribe the audio file
             user_input = transcribe_audio(Config.TRANSCRIPTION_MODEL, transcription_api_key, 'test.wav', Config.LOCAL_MODEL_PATH)
-            logging.info(Fore.GREEN + "You said: " + user_input)
+
+            # Check if the transcription is empty and restart the recording if it is. This check will avoid empty requests if vad_filter is used in the fastwhisperapi.
+            if not user_input:
+                logging.info("No transcription was returned. Starting recording again.")
+                continue
+            logging.info(Fore.GREEN + "You said: " + user_input + Fore.RESET)
+
+            # Check if the user wants to exit the program
+            if "goodbye" in user_input.lower() or "arrivederci" in user_input.lower():
+                break
 
             # Append the user's input to the chat history
             chat_history.append({"role": "user", "content": user_input})
@@ -45,7 +54,7 @@ def main():
 
             # Generate a response
             response_text = generate_response(Config.RESPONSE_MODEL, response_api_key, chat_history, Config.LOCAL_MODEL_PATH)
-            logging.info(Fore.CYAN + "Response: " + response_text)
+            logging.info(Fore.CYAN + "Response: " + response_text + Fore.RESET)
 
             # Append the assistant's response to the chat history
             chat_history.append({"role": "assistant", "content": response_text})
@@ -70,7 +79,7 @@ def main():
             # delete_file(output_file)
 
         except Exception as e:
-            logging.error(Fore.RED + f"An error occurred: {e}")
+            logging.error(Fore.RED + f"An error occurred: {e}" + Fore.RESET)
             delete_file('test.wav')
             if 'output_file' in locals():
                 delete_file(output_file)

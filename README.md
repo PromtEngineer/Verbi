@@ -81,7 +81,7 @@ Edit config.py to select the models you want to use:
 ```shell
     class Config:
         # Model selection
-        TRANSCRIPTION_MODEL = 'groq'  # Options: 'openai', 'groq', 'deepgram', 'local'
+        TRANSCRIPTION_MODEL = 'groq'  # Options: 'openai', 'groq', 'deepgram', 'fastwhisperapi' 'local'
         RESPONSE_MODEL = 'groq'       # Options: 'openai', 'groq', 'local'
         TTS_MODEL = 'deepgram'        # Options: 'openai', 'deepgram', 'local'
 
@@ -96,13 +96,48 @@ Edit config.py to select the models you want to use:
 ```shell
    python run_voice_assistant.py
 ```
+5. 🎤 **Install FastWhisperAPI**
+
+   _Optional step if you need a local transcription model_
+
+   ***Clone the repository***
+   ```shell
+      cd..
+      git clone https://github.com/3choff/FastWhisperAPI.git
+      cd FastWhisperAPI
+   ```
+   ***Install the required packages:***
+   ```shell
+      pip install -r requirements.txt
+   ```
+   ***Run the API***
+   ```shell
+      fastapi run main.py
+   ```
+   ***Alternative Setup and Run Methods***
+
+   The API can also run directly on a Docker container or in Google Colab.
+
+   ***Docker:***
+
+   ***Build a Docker container:***
+   ```shell
+      docker build -t fastwhisperapi .
+   ```
+   ***Run the container***
+   ```shell
+      docker run -p 8000:8000 fastwhisperapi
+   ```
+   Refer to the repository documentation for the Google Colab method: https://github.com/3choff/FastWhisperAPI/blob/main/README.md
+
 ## Model Options ⚙️
 
 #### Transcription Models  🎤
 
 - **OpenAI**: Uses OpenAI's Whisper model.
 - **Groq**: Uses Groq's Whisper-large-v3 model.
-- **Deepgram**: Placeholder for Deepgram's transcription model.
+- **Deepgram**: Uses Deepgram's transcription model.
+- **FastWhisperAPI**: Uses FastWhisperAPI, a local transcription API powered by Faster Whisper.
 - **Local**: Placeholder for a local speech-to-text (STT) model.
 
 #### Response Generation Models  💬
