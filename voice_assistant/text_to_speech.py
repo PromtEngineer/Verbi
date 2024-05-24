@@ -31,7 +31,7 @@ def text_to_speech(model, api_key, text, output_file_path, local_model_path=None
         elif model == 'deepgram':
             client = DeepgramClient(api_key=api_key)
             options = SpeakOptions(
-                model="aura-angus-en", # Change voice if needed
+                model="aura-luna-en", # Change voice if needed
                 encoding="linear16",
                 container="wav"
             )

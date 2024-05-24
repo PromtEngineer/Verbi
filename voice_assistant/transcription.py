@@ -75,19 +75,15 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
                 payload: FileSource = {
                     "buffer": buffer_data,
                 }
-
                 #STEP 2: Configure Deepgram options for audio analysis
                 options = PrerecordedOptions(
                     model="nova-2",
                     smart_format=True,
                 )
- 
                 # STEP 3: Call the transcribe_file method with the text payload and options
                 response = deepgram.listen.prerecorded.v("1").transcribe_file(payload, options)
-
                 # STEP 4: Print and parse the response
                 response_json = response.to_json()
-
                 # Parse the JSON string into a Python dictionary
                 data = json.loads(response_json)
 
@@ -122,6 +118,7 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
             response = requests.post(endpoint, files=files, data=data, headers=headers)
             response_json = response.json()
             return response_json.get('text', 'No text found in the response.')
+          
         elif model == 'local':
             # Placeholder for local STT model transcription
             return "Transcribed text from local model"
