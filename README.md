@@ -189,5 +189,8 @@ We welcome contributions from the community! If you'd like to help improve this 
 4. Push to the branch (`git push origin feature-branch`).
 5. Open a pull request detailing your changes.
 
+## Star History ✨✨✨
+
+[![Star History Chart](https://api.star-history.com/svg?repos=PromtEngineer/Verbi&type=Date)](https://star-history.com/#PromtEngineer/Verbi&Date)
 
 
