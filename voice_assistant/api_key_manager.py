@@ -41,4 +41,6 @@ def get_tts_api_key():
         return Config.OPENAI_API_KEY
     elif Config.TTS_MODEL == 'deepgram':
         return Config.DEEPGRAM_API_KEY
+    elif Config.TTS_MODEL == 'elevenlabs':
+        return Config.ELEVENLABS_API_KEY
     return None

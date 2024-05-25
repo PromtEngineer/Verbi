@@ -89,7 +89,7 @@ Edit config.py to select the models you want to use:
         # Model selection
         TRANSCRIPTION_MODEL = 'groq'  # Options: 'openai', 'groq', 'deepgram', 'fastwhisperapi' 'local'
         RESPONSE_MODEL = 'groq'       # Options: 'openai', 'groq', 'local'
-        TTS_MODEL = 'deepgram'        # Options: 'openai', 'deepgram', 'local'
+        TTS_MODEL = 'deepgram'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local'
 
         # API keys and paths
         OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -97,7 +97,13 @@ Edit config.py to select the models you want to use:
         DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
         LOCAL_MODEL_PATH = os.getenv("LOCAL_MODEL_PATH")
 ```
-4.  🏃 **Run the voice assistant**
+
+4. 🔊 **Configure ElevenLabs Jarvis' Voice**
+- Voice samples [here](https://github.com/PromtEngineer/Verbi/tree/main/voice_samples).
+- Follow this [link](https://elevenlabs.io/app/voice-lab/share/de3746fa51a09e771604d74b5d1ff6797b6b96a5958f9de95cef544dde31dad9/WArWzu0z4mbSyy5BfRKM) to add the Jarvis voice to your ElevenLabs account.
+- Name the voice 'Paul J.' or, if you prefer a different name, ensure it matches the ELEVENLABS_VOICE_ID variable in the text_to_speech.py file.
+
+4. 🏃 **Run the voice assistant**
 
 ```shell
    python run_voice_assistant.py
@@ -154,8 +160,9 @@ Edit config.py to select the models you want to use:
 
 #### Text-to-Speech (TTS) Models  🔊
 
-- **OpenAI**: Uses OpenAI's TTS model with the "fable" voice.
-- **Deepgram**: Uses Deepgram's TTS model with the "aura-angus-en" voice.
+- **OpenAI**: Uses OpenAI's TTS model with the 'fable' voice.
+- **Deepgram**: Uses Deepgram's TTS model with the 'aura-angus-en' voice.
+- **ElevenLabs**: Uses ElevenLabs' TTS model with the 'Paul J.' voice.
 - **Local**: Placeholder for a local TTS model.
 
 ## Detailed Module Descriptions  📘

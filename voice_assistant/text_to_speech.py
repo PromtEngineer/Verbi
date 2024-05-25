@@ -6,9 +6,6 @@ from openai import OpenAI
 from deepgram import DeepgramClient, SpeakOptions
 from elevenlabs.client import ElevenLabs
 
-#ElevenLabs voice ID
-ELEVENLABS_VOICE_ID = "Chris"
-
 def text_to_speech(model, api_key, text, output_file_path, local_model_path=None):
     """
     Convert text to speech using the specified model.
@@ -20,7 +17,7 @@ def text_to_speech(model, api_key, text, output_file_path, local_model_path=None
     output_file_path (str): The path to save the generated speech audio file.
     local_model_path (str): The path to the local model (if applicable).
     """
-    global ELEVENLABS_VOICE_ID
+    
     try:
         if model == 'openai':
             client = OpenAI(api_key=api_key)
@@ -44,6 +41,7 @@ def text_to_speech(model, api_key, text, output_file_path, local_model_path=None
             SPEAK_OPTIONS = {"text": text}
             response = client.speak.v("1").save(output_file_path, SPEAK_OPTIONS, options)
         elif model == 'elevenlabs':
+            ELEVENLABS_VOICE_ID = "Paul J."
             client = ElevenLabs(api_key=api_key)
             audio = client.generate(
                 text=text, voice=ELEVENLABS_VOICE_ID, output_format="mp3_22050_32", model="eleven_turbo_v2"
