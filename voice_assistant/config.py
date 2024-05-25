@@ -13,21 +13,23 @@ class Config:
     Attributes:
     TRANSCRIPTION_MODEL (str): The model to use for transcription ('openai', 'groq', 'deepgram', 'fastwhisperapi', 'local').
     RESPONSE_MODEL (str): The model to use for response generation ('openai', 'groq', 'local').
-    TTS_MODEL (str): The model to use for text-to-speech ('openai', 'deepgram', 'local').
+    TTS_MODEL (str): The model to use for text-to-speech ('openai', 'deepgram', 'elevenlabs', 'local').
     OPENAI_API_KEY (str): API key for OpenAI services.
     GROQ_API_KEY (str): API key for Groq services.
     DEEPGRAM_API_KEY (str): API key for Deepgram services.
+    ELEVENLABS_API_KEY (str): API key for ElevenLabs services.
     LOCAL_MODEL_PATH (str): Path to the local model.
     """
     # Model selection
     TRANSCRIPTION_MODEL = 'deepgram'  # possible values: openai, groq, fastwhisperapi
     RESPONSE_MODEL = 'groq'       # possible values: openai, groq
-    TTS_MODEL = 'deepgram'        # possible values: openai, deepgram
+    TTS_MODEL = 'elevenlabs'        # possible values: openai, deepgram
 
     # API keys and paths
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
     DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
+    ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
     LOCAL_MODEL_PATH = os.getenv("LOCAL_MODEL_PATH")
 
     @staticmethod
@@ -42,8 +44,8 @@ class Config:
             raise ValueError("Invalid TRANSCRIPTION_MODEL. Must be one of ['openai', 'groq', 'deepgram', 'fastwhisperapi', 'local']")
         if Config.RESPONSE_MODEL not in ['openai', 'groq', 'local']:
             raise ValueError("Invalid RESPONSE_MODEL. Must be one of ['openai', 'groq', 'local']")
-        if Config.TTS_MODEL not in ['openai', 'deepgram', 'local']:
-            raise ValueError("Invalid TTS_MODEL. Must be one of ['openai', 'deepgram', 'local']")
+        if Config.TTS_MODEL not in ['openai', 'deepgram', 'elevenlabs' 'local']:
+            raise ValueError("Invalid TTS_MODEL. Must be one of ['openai', 'deepgram', 'elevenlabs', 'local']")
 
         if Config.TRANSCRIPTION_MODEL == 'openai' and not Config.OPENAI_API_KEY:
             raise ValueError("OPENAI_API_KEY is required for OpenAI models")
@@ -61,3 +63,5 @@ class Config:
             raise ValueError("OPENAI_API_KEY is required for OpenAI models")
         if Config.TTS_MODEL == 'deepgram' and not Config.DEEPGRAM_API_KEY:
             raise ValueError("DEEPGRAM_API_KEY is required for Deepgram models")
+        if Config.TTS_MODEL == 'elevenlabs' and not Config.ELEVENLABS_API_KEY:
+            raise ValueError("ELEVENLABS_API_KEY is required for ElevenLabs models")

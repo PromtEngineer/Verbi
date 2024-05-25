@@ -60,7 +60,7 @@ def main():
             chat_history.append({"role": "assistant", "content": response_text})
 
             # Determine the output file format based on the TTS model
-            if Config.TTS_MODEL == 'openai':
+            if Config.TTS_MODEL == 'openai' or Config.TTS_MODEL == 'elevenlabs':
                 output_file = 'output.mp3'
             else:
                 output_file = 'output.wav'
@@ -75,8 +75,8 @@ def main():
             play_audio(output_file)
             
             # Clean up audio files
-            # delete_file('test.wav')
-            # delete_file(output_file)
+            delete_file('test.wav')
+            delete_file(output_file)
 
         except Exception as e:
             logging.error(Fore.RED + f"An error occurred: {e}" + Fore.RESET)
