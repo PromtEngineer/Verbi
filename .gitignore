@@ -135,3 +135,7 @@ cython_debug/
 #audio files
 *.mp3
 *.wav
+
+# Exception for voice_samples
+!voice_samples/*.mp3
+!voice_samples/*.wav
