@@ -80,7 +80,7 @@ Create a  `.env` file in the root directory and add your API keys:
     DEEPGRAM_API_KEY=your_deepgram_api_key
     LOCAL_MODEL_PATH=path/to/local/model
 ```
-4. 🧩 **Configure the models**
+4.1 🧩 **Configure the models**
 
 Edit config.py to select the models you want to use:
 
@@ -98,12 +98,12 @@ Edit config.py to select the models you want to use:
         LOCAL_MODEL_PATH = os.getenv("LOCAL_MODEL_PATH")
 ```
 
-4. 🔊 **Configure ElevenLabs Jarvis' Voice**
+4.1.1 🔊 **Configure ElevenLabs Jarvis' Voice**
 - Voice samples [here](https://github.com/PromtEngineer/Verbi/tree/main/voice_samples).
 - Follow this [link](https://elevenlabs.io/app/voice-lab/share/de3746fa51a09e771604d74b5d1ff6797b6b96a5958f9de95cef544dde31dad9/WArWzu0z4mbSyy5BfRKM) to add the Jarvis voice to your ElevenLabs account.
 - Name the voice 'Paul J.' or, if you prefer a different name, ensure it matches the ELEVENLABS_VOICE_ID variable in the text_to_speech.py file.
 
-4. 🏃 **Run the voice assistant**
+4.2 🏃 **Run the voice assistant**
 
 ```shell
    python run_voice_assistant.py
