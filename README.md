@@ -30,6 +30,8 @@ voice_assistant/
 │   ├── response_generation.py
 │   ├── text_to_speech.py
 │   ├── utils.py
+│   ├── local_tts_api.py
+│   ├── local_tts_generation.py
 ├── .env
 ├── run_voice_assistant.py
 ├── setup.py
@@ -80,7 +82,7 @@ Create a  `.env` file in the root directory and add your API keys:
     DEEPGRAM_API_KEY=your_deepgram_api_key
     LOCAL_MODEL_PATH=path/to/local/model
 ```
-4.1 🧩 **Configure the models**
+5. 🧩 **Configure the models**
 
 Edit config.py to select the models you want to use:
 
@@ -89,7 +91,7 @@ Edit config.py to select the models you want to use:
         # Model selection
         TRANSCRIPTION_MODEL = 'groq'  # Options: 'openai', 'groq', 'deepgram', 'fastwhisperapi' 'local'
         RESPONSE_MODEL = 'groq'       # Options: 'openai', 'groq', 'local'
-        TTS_MODEL = 'deepgram'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local'
+        TTS_MODEL = 'deepgram'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local', 'melotts'
 
         # API keys and paths
         OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -98,17 +100,17 @@ Edit config.py to select the models you want to use:
         LOCAL_MODEL_PATH = os.getenv("LOCAL_MODEL_PATH")
 ```
 
-4.1.1 🔊 **Configure ElevenLabs Jarvis' Voice**
+6. 🔊 **Configure ElevenLabs Jarvis' Voice**
 - Voice samples [here](https://github.com/PromtEngineer/Verbi/tree/main/voice_samples).
 - Follow this [link](https://elevenlabs.io/app/voice-lab/share/de3746fa51a09e771604d74b5d1ff6797b6b96a5958f9de95cef544dde31dad9/WArWzu0z4mbSyy5BfRKM) to add the Jarvis voice to your ElevenLabs account.
 - Name the voice 'Paul J.' or, if you prefer a different name, ensure it matches the ELEVENLABS_VOICE_ID variable in the text_to_speech.py file.
 
-4.2 🏃 **Run the voice assistant**
+7. 🏃 **Run the voice assistant**
 
 ```shell
    python run_voice_assistant.py
 ```
-5. 🎤 **Install FastWhisperAPI**
+8. 🎤 **Install FastWhisperAPI**
 
    _Optional step if you need a local transcription model_
 
@@ -141,6 +143,26 @@ Edit config.py to select the models you want to use:
       docker run -p 8000:8000 fastwhisperapi
    ```
    Refer to the repository documentation for the Google Colab method: https://github.com/3choff/FastWhisperAPI/blob/main/README.md
+
+8. 🎤 **Install Local TTS - MeloTTS**
+
+   _Optional step if you need a local Text to Speech model_
+
+   ***Install MeloTTS from Github***
+
+   Use the following [link](https://github.com/myshell-ai/MeloTTS/blob/main/docs/install.md#linux-and-macos-install) to install MeloTTS for your operating system. 
+
+   Once the package is installed on your local virtual environment, you can start the api server using the following command. 
+   ```shell
+      python voice_assistant/local_tts_api.py
+   ```
+   The `local_tts_api.py` file implements as fastapi server that will listen to incoming text and will generate audio using MeloTTS model. 
+   In order to use the local TTS model, you will need to update the `config.py` file by setting: 
+
+   ```shell
+      TTS_MODEL = 'melotts'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local', 'melotts'
+   ```
+   You can run the main file to start using verbi with local models. 
 
 ## Model Options ⚙️
 
@@ -175,6 +197,8 @@ Edit config.py to select the models you want to use:
 - **`voice_assistant/response_generation.py`**: Handles generating responses using various language models.
 - **`voice_assistant/text_to_speech.py`**: Manages converting text responses into speech.
 - **`voice_assistant/utils.py`**: Contains utility functions like deleting files.
+- **`voice_assistant/local_tts_api.py`**: Contains the api implementation to run the MeloTTS model.
+- **`voice_assistant/local_tts_generation.py`**: Contains the code to use the MeloTTS api to generated audio.
 - **`voice_assistant/__init__.py`**: Initializes the `voice_assistant` package.
 
 ## Roadmap 🛤️🛤️🛤️

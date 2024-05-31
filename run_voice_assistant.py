@@ -4,7 +4,7 @@ import logging
 import time
 from colorama import Fore, init
 from voice_assistant.audio import record_audio, play_audio
-from voice_assistant.transcription import transcribe_audio
+from voice_assistant.transcription_old import transcribe_audio
 from voice_assistant.response_generation import generate_response
 from voice_assistant.text_to_speech import text_to_speech
 from voice_assistant.utils import delete_file
@@ -28,13 +28,13 @@ def main():
     while True:
         try:
             # Record audio from the microphone and save it as 'test.wav'
-            record_audio('test.wav')
+            record_audio(Config.INPUT_AUDIO)
 
             # Get the API key for transcription
             transcription_api_key = get_transcription_api_key()
             
             # Transcribe the audio file
-            user_input = transcribe_audio(Config.TRANSCRIPTION_MODEL, transcription_api_key, 'test.wav', Config.LOCAL_MODEL_PATH)
+            user_input = transcribe_audio(Config.TRANSCRIPTION_MODEL, transcription_api_key, Config.INPUT_AUDIO, Config.LOCAL_MODEL_PATH)
 
             # Check if the transcription is empty and restart the recording if it is. This check will avoid empty requests if vad_filter is used in the fastwhisperapi.
             if not user_input:
@@ -60,7 +60,7 @@ def main():
             chat_history.append({"role": "assistant", "content": response_text})
 
             # Determine the output file format based on the TTS model
-            if Config.TTS_MODEL == 'openai' or Config.TTS_MODEL == 'elevenlabs':
+            if Config.TTS_MODEL == 'openai' or Config.TTS_MODEL == 'elevenlabs' or Config.TTS_MODEL == 'melotts':
                 output_file = 'output.mp3'
             else:
                 output_file = 'output.wav'
@@ -75,12 +75,12 @@ def main():
             play_audio(output_file)
             
             # Clean up audio files
-            delete_file('test.wav')
-            delete_file(output_file)
+            # delete_file(Config.INPUT_AUDIO)
+            # delete_file(output_file)
 
         except Exception as e:
             logging.error(Fore.RED + f"An error occurred: {e}" + Fore.RESET)
-            delete_file('test.wav')
+            delete_file(Config.INPUT_AUDIO)
             if 'output_file' in locals():
                 delete_file(output_file)
             time.sleep(1)

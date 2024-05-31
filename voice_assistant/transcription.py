@@ -1,4 +1,5 @@
 # voice_assistant/transcription.py
+
 from colorama import Fore, init
 from openai import OpenAI
 from groq import Groq
@@ -27,6 +28,7 @@ def check_fastwhisperapi():
         except Exception:
             raise Exception("FastWhisperAPI is not running")
         checked_fastwhisperapi = True
+
 def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
     """
     Transcribe an audio file using the specified model.
@@ -40,8 +42,6 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
     Returns:
     str: The transcribed text.
     """
-    # measure the transcription response time
-    # start_time = time.time()
     try:
         if model == 'openai':
             client = OpenAI(api_key=api_key)
@@ -49,8 +49,6 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
                 transcription = client.audio.transcriptions.create(
                     model="whisper-1",
                     file=audio_file,
-
-                    # Add language model parameter to improve transcription accuracy
                     language='en'
                 )
             return transcription.text
@@ -60,13 +58,11 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
                 transcription = client.audio.transcriptions.create(
                     model="whisper-large-v3",
                     file=audio_file,
-                    # Add language model parameter to improve transcription accuracy
                     language='en'
                 )
             return transcription.text
         elif model == 'deepgram':
             try:
-                # STEP 1 Create a Deepgram client using the API key
                 deepgram = DeepgramClient(api_key)
 
                 with open(audio_file_path, "rb") as file:
@@ -75,22 +71,16 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
                 payload: FileSource = {
                     "buffer": buffer_data,
                 }
-                #STEP 2: Configure Deepgram options for audio analysis
                 options = PrerecordedOptions(
                     model="nova-2",
                     smart_format=True,
                 )
-                # STEP 3: Call the transcribe_file method with the text payload and options
                 response = deepgram.listen.prerecorded.v("1").transcribe_file(payload, options)
-                # STEP 4: Print and parse the response
                 response_json = response.to_json()
-                # Parse the JSON string into a Python dictionary
                 data = json.loads(response_json)
 
-                # Extract and print the transcript
                 transcript = data['results']['channels'][0]['alternatives'][0]['transcript']
 
-                # Return the transcript
                 return transcript
 
             except Exception as e:
@@ -106,10 +96,10 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
                 'file': (audio_file_path, open(audio_file_path, 'rb')),
             }
             data = {
-                'model': "base", # possible values: tiny, base, small, medium, large
-                'language': "en", # possible values language ISO codes. Set None for auto detection
-                'initial_prompt': None, # optional initial prompt for the model useful for context and spelling
-                'vad_filter': True, # set to True to avoid model transcription allucinations on silence
+                'model': "base",
+                'language': "en",
+                'initial_prompt': None,
+                'vad_filter': True,
             }
             headers = {
                 'Authorization': 'Bearer dummy_api_key',
@@ -128,7 +118,3 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
     except Exception as e:
         logging.error(Fore.RED + f"Failed to transcribe audio: {e}" + Fore.RESET)
         raise Exception("Error in transcribing audio")
-    # finally:
-    #     # end the transcription response time
-    #     time_difference = time.time() - start_time
-    #     logging.info(Fore.YELLOW + f"Time taken to transcribe: {time_difference} seconds" + Fore.RESET)

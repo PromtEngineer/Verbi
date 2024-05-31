@@ -5,6 +5,7 @@ import elevenlabs
 from openai import OpenAI
 from deepgram import DeepgramClient, SpeakOptions
 from elevenlabs.client import ElevenLabs
+from voice_assistant.local_tts_generation import generate_audio_file_melotts
 
 def text_to_speech(model, api_key, text, output_file_path, local_model_path=None):
     """
@@ -47,6 +48,8 @@ def text_to_speech(model, api_key, text, output_file_path, local_model_path=None
                 text=text, voice=ELEVENLABS_VOICE_ID, output_format="mp3_22050_32", model="eleven_turbo_v2"
             )
             elevenlabs.save(audio, output_file_path)
+        elif model=="melotts": # this is a local model
+            generate_audio_file_melotts(text=text, filename=output_file_path)
         elif model == 'local':
             # Placeholder for local TTS model
             with open(output_file_path, "wb") as f:
