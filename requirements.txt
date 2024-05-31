@@ -27,3 +27,5 @@ colorama
 requests
 keyboard
 elevenlabs
+fastapi
+uvicorn
