@@ -23,7 +23,7 @@ class Config:
     # Model selection
     TRANSCRIPTION_MODEL = 'deepgram'  # possible values: openai, groq, deepgram, fastwhisperapi
     RESPONSE_MODEL = 'groq'       # possible values: openai, groq
-    TTS_MODEL = 'melotts'        # possible values: openai, deepgram, elevenlabs, melotts
+    TTS_MODEL = 'deepgram'        # possible values: openai, deepgram, elevenlabs, melotts, cartesia
 
     # currently using the MeloTTS for local models. here is how to get started:
     # https://github.com/myshell-ai/MeloTTS/blob/main/docs/install.md#linux-and-macos-install
@@ -35,6 +35,7 @@ class Config:
     DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
     ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
     LOCAL_MODEL_PATH = os.getenv("LOCAL_MODEL_PATH")
+    CARTESIA_API_KEY = os.getenv("CARTESIA_API_KEY")
 
     # for serving the MeloTTS model
     TTS_PORT_LOCAL = 5150
@@ -54,8 +55,8 @@ class Config:
             raise ValueError("Invalid TRANSCRIPTION_MODEL. Must be one of ['openai', 'groq', 'deepgram', 'fastwhisperapi', 'local']")
         if Config.RESPONSE_MODEL not in ['openai', 'groq', 'local']:
             raise ValueError("Invalid RESPONSE_MODEL. Must be one of ['openai', 'groq', 'local']")
-        if Config.TTS_MODEL not in ['openai', 'deepgram', 'elevenlabs', 'melotts', 'local']:
-            raise ValueError("Invalid TTS_MODEL. Must be one of ['openai', 'deepgram', 'elevenlabs', 'local']")
+        if Config.TTS_MODEL not in ['openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local']:
+            raise ValueError("Invalid TTS_MODEL. Must be one of ['openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local']")
 
         if Config.TRANSCRIPTION_MODEL == 'openai' and not Config.OPENAI_API_KEY:
             raise ValueError("OPENAI_API_KEY is required for OpenAI models")
@@ -75,3 +76,6 @@ class Config:
             raise ValueError("DEEPGRAM_API_KEY is required for Deepgram models")
         if Config.TTS_MODEL == 'elevenlabs' and not Config.ELEVENLABS_API_KEY:
             raise ValueError("ELEVENLABS_API_KEY is required for ElevenLabs models")
+        if Config.TTS_MODEL == 'cartesia' and not Config.CARTESIA_API_KEY:
+            raise ValueError("CARTESIA_API_KEY is required for Cartesia models")
+

@@ -29,3 +29,7 @@ keyboard
 elevenlabs
 fastapi
 uvicorn
+numpy 
+sounddevice 
+cartesia
+soundfile
