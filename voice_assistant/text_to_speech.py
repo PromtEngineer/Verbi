@@ -7,6 +7,7 @@ from deepgram import DeepgramClient, SpeakOptions
 from elevenlabs.client import ElevenLabs
 from cartesia.tts import CartesiaTTS
 import soundfile as sf
+import json
 
 
 from voice_assistant.local_tts_generation import generate_audio_file_melotts
@@ -53,23 +54,24 @@ def text_to_speech(model, api_key, text, output_file_path, local_model_path=None
             )
             elevenlabs.save(audio, output_file_path)
         elif model == "cartesia":
-            # setup
-            voice = 'Barbershop Man'
+            # config
+            with open('Barbershop Man.json') as f:
+                voices = json.load(f)
+
+            # voice_id = voices["Barbershop Man"]["id"]
+            voice = voices["Barbershop Man"]["embedding"]
             gen_cfg = dict(model_id="upbeat-moon", data_rtype='array', output_format='fp32')
+
             # create client
             client = CartesiaTTS(api_key=api_key)
-            voices = client.get_voices()
-            voice_id = voices[voice]["id"]
-            voice = client.get_voice_embedding(voice_id=voice_id)
 
             # generate audio
             output = client.generate(transcript=text, voice=voice, stream=False, **gen_cfg)
 
-            # store audio
+            # save audio to file
             buffer = output["audio"]
             rate = output["sampling_rate"]
-            # Save audio as MP3
-            sf.write(output_file_path, buffer, rate, format='mp3')
+            sf.write(output_file_path, buffer, rate) 
 
 
         elif model == "melotts": # this is a local model
