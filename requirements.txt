@@ -33,3 +33,4 @@ numpy
 sounddevice 
 cartesia
 soundfile
+ollama
