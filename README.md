@@ -90,7 +90,7 @@ Edit config.py to select the models you want to use:
     class Config:
         # Model selection
         TRANSCRIPTION_MODEL = 'groq'  # Options: 'openai', 'groq', 'deepgram', 'fastwhisperapi' 'local'
-        RESPONSE_MODEL = 'groq'       # Options: 'openai', 'groq', 'local'
+        RESPONSE_MODEL = 'groq'       # Options: 'openai', 'groq', 'ollama', 'local'
         TTS_MODEL = 'deepgram'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local', 'melotts'
 
         # API keys and paths
@@ -178,6 +178,7 @@ Edit config.py to select the models you want to use:
 
 - **OpenAI**: Uses OpenAI's GPT-4 model.
 - **Groq**: Uses Groq's LLaMA model.
+- **Ollama**: Uses any model served via Ollama.
 - **Local**: Placeholder for a local language model.
 
 #### Text-to-Speech (TTS) Models  🔊

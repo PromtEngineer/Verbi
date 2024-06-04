@@ -2,7 +2,10 @@
 
 from openai import OpenAI
 from groq import Groq
+import ollama
 import logging
+from voice_assistant.config import Config
+
 
 def generate_response(model, api_key, chat_history, local_model_path=None):
     """
@@ -21,17 +24,24 @@ def generate_response(model, api_key, chat_history, local_model_path=None):
         if model == 'openai':
             client = OpenAI(api_key=api_key)
             response = client.chat.completions.create(
-                model="gpt-4o",
+                model=Config.OPENAI_LLM,
                 messages=chat_history
             )
             return response.choices[0].message.content
         elif model == 'groq':
             client = Groq(api_key=api_key)
             response = client.chat.completions.create(
-                model="llama3-8b-8192",
+                model=Config.GROQ_LLM, #"llama3-8b-8192",
                 messages=chat_history
             )
             return response.choices[0].message.content
+        elif model == 'ollama':
+            response = ollama.chat(
+                model=Config.OLLAMA_LLM,
+                messages=chat_history,
+                # stream=True,
+            )
+            return response['message']['content']
         elif model == 'local':
             # Placeholder for local LLM response generation
             return "Generated response from local model"
