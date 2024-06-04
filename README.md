@@ -100,6 +100,8 @@ Edit config.py to select the models you want to use:
         LOCAL_MODEL_PATH = os.getenv("LOCAL_MODEL_PATH")
 ```
 
+If you are running LLM locally via [Ollama](https://ollama.com/), make sure the Ollama server is runnig before starting verbi. 
+
 6. 🔊 **Configure ElevenLabs Jarvis' Voice**
 - Voice samples [here](https://github.com/PromtEngineer/Verbi/tree/main/voice_samples).
 - Follow this [link](https://elevenlabs.io/app/voice-lab/share/de3746fa51a09e771604d74b5d1ff6797b6b96a5958f9de95cef544dde31dad9/WArWzu0z4mbSyy5BfRKM) to add the Jarvis voice to your ElevenLabs account.
