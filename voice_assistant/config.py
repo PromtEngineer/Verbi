@@ -21,13 +21,23 @@ class Config:
     LOCAL_MODEL_PATH (str): Path to the local model.
     """
     # Model selection
+<<<<<<< HEAD
     TRANSCRIPTION_MODEL = 'openai'  # possible values: openai, groq, deepgram, fastwhisperapi
     RESPONSE_MODEL = 'openai'       # possible values: openai, groq
     TTS_MODEL = 'openai'        # possible values: openai, deepgram, elevenlabs, melotts, cartesia
+=======
+    TRANSCRIPTION_MODEL = 'deepgram'  # possible values: openai, groq, deepgram, fastwhisperapi
+    RESPONSE_MODEL = 'ollama'  # possible values: openai, groq, ollama
+    TTS_MODEL = 'deepgram'  # possible values: openai, deepgram, elevenlabs, melotts, cartesia
+>>>>>>> cdd44940931ed18e64d0e7ee69544a3655e9f363
 
     # currently using the MeloTTS for local models. here is how to get started:
     # https://github.com/myshell-ai/MeloTTS/blob/main/docs/install.md#linux-and-macos-install
 
+    # LLM Selection
+    OLLAMA_LLM="llama3:8b"
+    GROQ_LLM="llama3-8b-8192"
+    OPENAI_LLM="gpt-4o"
 
     # API keys and paths
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -53,7 +63,7 @@ class Config:
         """
         if Config.TRANSCRIPTION_MODEL not in ['openai', 'groq', 'deepgram', 'fastwhisperapi', 'local']:
             raise ValueError("Invalid TRANSCRIPTION_MODEL. Must be one of ['openai', 'groq', 'deepgram', 'fastwhisperapi', 'local']")
-        if Config.RESPONSE_MODEL not in ['openai', 'groq', 'local']:
+        if Config.RESPONSE_MODEL not in ['openai', 'groq', 'ollama', 'local']:
             raise ValueError("Invalid RESPONSE_MODEL. Must be one of ['openai', 'groq', 'local']")
         if Config.TTS_MODEL not in ['openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local']:
             raise ValueError("Invalid TTS_MODEL. Must be one of ['openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local']")
@@ -69,6 +79,7 @@ class Config:
             raise ValueError("OPENAI_API_KEY is required for OpenAI models")
         if Config.RESPONSE_MODEL == 'groq' and not Config.GROQ_API_KEY:
             raise ValueError("GROQ_API_KEY is required for Groq models")
+
 
         if Config.TTS_MODEL == 'openai' and not Config.OPENAI_API_KEY:
             raise ValueError("OPENAI_API_KEY is required for OpenAI models")
