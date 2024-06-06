@@ -91,7 +91,7 @@ Edit config.py to select the models you want to use:
         # Model selection
         TRANSCRIPTION_MODEL = 'groq'  # Options: 'openai', 'groq', 'deepgram', 'fastwhisperapi' 'local'
         RESPONSE_MODEL = 'groq'       # Options: 'openai', 'groq', 'ollama', 'local'
-        TTS_MODEL = 'deepgram'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local', 'melotts'
+        TTS_MODEL = 'deepgram'        # Options: 'openai', 'deepgram', 'elevenlabs', 'cartesia', 'local', 'melotts', 'fastxttsapi'
 
         # API keys and paths
         OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -165,6 +165,18 @@ If you are running LLM locally via [Ollama](https://ollama.com/), make sure the 
       TTS_MODEL = 'melotts'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local', 'melotts'
    ```
    You can run the main file to start using verbi with local models. 
+
+9. 🔊 **Alternative Local TTS - Coqui XTTS v2**
+
+   _Optional step if you need a local Text to Speech model_
+
+   ***Install Coqui XTTS from Github***
+
+   To set up the TTS server, follow the instructions in the [FastXttsAPI](https://github.com/3choff/FastXttsAPI/blob/main/README.md)
+
+   ***Usage**
+
+   The multilingual TTS model is queried through a FastAPI app that provides an endpoint "/v1/speech" to generate speech, which can provide both stream and non-stream responses. To get a list of all the 62 studio voices available, query the endpoint "/voices". The best performance is achieved when you run the model in a Docker container, but it is also possible to run the server in the [Google Colab](https://github.com/3choff/FastXttsAPI/blob/main/FastXttsAPI_notebook.ipynb) provided in the repository.
 
 ## Model Options ⚙️
 

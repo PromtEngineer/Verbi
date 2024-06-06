@@ -5,8 +5,15 @@ import pygame
 import time
 import logging
 import pydub
+import subprocess
+import shutil
 from io import BytesIO
 from pydub import AudioSegment
+
+
+def is_installed(command):
+        from shutil import which
+        return which(command) is not None
 
 def record_audio(file_path, timeout=10, phrase_time_limit=None, retries=3, energy_threshold=2000, pause_threshold=1, phrase_threshold=0.1, dynamic_energy_threshold=True, calibration_duration=1):
     """
@@ -68,3 +75,31 @@ def play_audio(file_path):
         logging.error(f"Failed to play audio: {e}")
     except Exception as e:
         logging.error(f"An unexpected error occurred while playing audio: {e}")
+def play_audio_stream(audio_stream):
+    """
+    Play an audio stream using ffplay.
+
+    Args:
+    audio_stream (generator): The audio stream to play.
+    """
+    # Use subprocess to pipe the audio data to ffplay and play it
+    if not is_installed("ffplay"):
+        raise ValueError("ffplay not found, necessary to stream audio.")
+    ffplay_cmd = ['ffplay', '-probesize', '512', '-autoexit', '-', "-nodisp"]
+    ffplay_proc = subprocess.Popen(
+        ffplay_cmd, 
+        stdin=subprocess.PIPE, 
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+    try:
+        for chunk in audio_stream:
+            ffplay_proc.stdin.write(chunk)
+            # print("Received and played a chunk")
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
+    finally:
+        if ffplay_proc.stdin:
+            ffplay_proc.stdin.close()
+        ffplay_proc.wait()

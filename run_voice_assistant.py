@@ -72,11 +72,12 @@ def main():
             text_to_speech(Config.TTS_MODEL, tts_api_key, response_text, output_file, Config.LOCAL_MODEL_PATH)
 
             # Play the generated speech audio
-            play_audio(output_file)
             
-            # Clean up audio files
-            # delete_file(Config.INPUT_AUDIO)
-            # delete_file(output_file)
+            if Config.TTS_MODEL not in ['fastxttsapi', 'elevenlabs']:
+                play_audio(output_file)
+                # Clean up audio files
+                # delete_file(Config.INPUT_AUDIO)
+                # delete_file(output_file)
 
         except Exception as e:
             logging.error(Fore.RED + f"An error occurred: {e}" + Fore.RESET)
