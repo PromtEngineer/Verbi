@@ -1,11 +1,9 @@
 # voice_assistant/text_to_speech.py
 import logging
-import elevenlabs
 import requests
 
 from openai import OpenAI
 from deepgram import DeepgramClient, SpeakOptions
-from elevenlabs.client import ElevenLabs
 from cartesia.tts import CartesiaTTS
 from voice_assistant.audio import play_audio_stream
 import soundfile as sf
