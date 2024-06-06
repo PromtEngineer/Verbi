@@ -1,11 +1,11 @@
 # voice_assistant/text_to_speech.py
 import logging
-import elevenlabs
+import requests
 
 from openai import OpenAI
 from deepgram import DeepgramClient, SpeakOptions
-from elevenlabs.client import ElevenLabs
 from cartesia.tts import CartesiaTTS
+from voice_assistant.audio import play_audio_stream
 import soundfile as sf
 import json
 
@@ -17,7 +17,7 @@ def text_to_speech(model, api_key, text, output_file_path, local_model_path=None
     Convert text to speech using the specified model.
     
     Args:
-    model (str): The model to use for TTS ('openai', 'deepgram', 'elevenlabs', 'local').
+    model (str): The model to use for TTS ('openai', 'deepgram', 'elevenlabs', 'cartesia', 'melotts', 'fastxttsapi', 'local').
     api_key (str): The API key for the TTS service.
     text (str): The text to convert to speech.
     output_file_path (str): The path to save the generated speech audio file.
@@ -48,11 +48,24 @@ def text_to_speech(model, api_key, text, output_file_path, local_model_path=None
             response = client.speak.v("1").save(output_file_path, SPEAK_OPTIONS, options)
         elif model == 'elevenlabs':
             ELEVENLABS_VOICE_ID = "Paul J."
-            client = ElevenLabs(api_key=api_key)
-            audio = client.generate(
-                text=text, voice=ELEVENLABS_VOICE_ID, output_format="mp3_22050_32", model="eleven_turbo_v2"
-            )
-            elevenlabs.save(audio, output_file_path)
+            ELEVENLABS_URL = f'https://api.elevenlabs.io/v1/text-to-speech/{ELEVENLABS_VOICE_ID}/stream'
+            headers = {
+                'accept': '*/*',
+                'xi-api-key': api_key,
+                'Content-Type': 'application/json'
+            }
+            data = {
+                'text': text,
+                'voice_settings': {
+                    'stability': 0.50,
+                    'similarity_boost': 0.75
+                },
+                "output_format": "mp3_22050_32" 
+            }
+        
+            with requests.post(ELEVENLABS_URL, headers=headers, json=data, stream=True) as r:
+                audio_stream = r.iter_content(chunk_size=512)
+                play_audio_stream(audio_stream)
         elif model == "cartesia":
             # config
             with open('Barbershop Man.json') as f:
@@ -73,9 +86,20 @@ def text_to_speech(model, api_key, text, output_file_path, local_model_path=None
             rate = output["sampling_rate"]
             sf.write(output_file_path, buffer, rate) 
 
-
         elif model == "melotts": # this is a local model
             generate_audio_file_melotts(text=text, filename=output_file_path)
+        elif model == "fastxttsapi":
+            # Set the URL for the FastXTTS API, change with the address of where the API is running either locally or on a server
+            FASTXTTSAPI_URL = 'https://localhost:8000'
+            payload = {
+                "text": text,
+                "language": "en",  
+                "voice": "Dionisio Schuyler",  #Query the endpoint https://localhost:8000/voices to get the list of available voices
+                "stream": True,
+            }
+            with requests.post(FASTXTTSAPI_URL + "/v1/speech", json=payload, verify=False) as r:
+                audio_stream = r.iter_content(chunk_size=512)
+                play_audio_stream(audio_stream)
         elif model == 'local':
             # Placeholder for local TTS model
             with open(output_file_path, "wb") as f:
