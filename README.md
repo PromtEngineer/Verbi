@@ -130,6 +130,9 @@ If you are running LLM locally via [Ollama](https://ollama.com/), make sure the 
    ```shell
       fastapi run main.py
    ```
+   > **Note:** To allow Verbi to query the FastWhisperAPI for transcription, ensure that the FastAPI server is running in a separate terminal in the background.
+
+
    ***Alternative Setup and Run Methods***
 
    The API can also run directly on a Docker container or in Google Colab.
@@ -172,11 +175,15 @@ If you are running LLM locally via [Ollama](https://ollama.com/), make sure the 
 
    ***Install Coqui XTTS from Github***
 
-   To set up the TTS server, follow the instructions in the [FastXttsAPI](https://github.com/3choff/FastXttsAPI/blob/main/README.md)
+   To set up the TTS server, follow the instructions in the [FastXttsAPI](https://github.com/3choff/FastXttsAPI)
 
-   ***Usage**
+   ***Usage***
 
    The multilingual TTS model is queried through a FastAPI app that provides an endpoint "/v1/speech" to generate speech, which can provide both stream and non-stream responses. To get a list of all the 62 studio voices available, query the endpoint "/voices". The best performance is achieved when you run the model in a Docker container, but it is also possible to run the server in the [Google Colab](https://github.com/3choff/FastXttsAPI/blob/main/FastXttsAPI_notebook.ipynb) provided in the repository.
+
+   > **Note:** To allow Verbi to query the FastXttsAPI for speech synthesis, ensure that the FastAPI server is running in a separate terminal in the background.
+
+   > **Fun Tip:** Explore voice cloning with FastXttsAPI! You can clone a voice using an audio clip of at least 10 seconds. Simply add the voice’s embedding to the 'studio_speakers' folder in FastXttsAPI, and enjoy interacting with a personalized Verbi chatbot.
 
 ## Model Options ⚙️
 
