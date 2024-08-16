@@ -34,3 +34,4 @@ sounddevice
 cartesia
 soundfile
 ollama
+pydub
