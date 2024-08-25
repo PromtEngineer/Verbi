@@ -56,7 +56,7 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
             client = Groq(api_key=api_key)
             with open(audio_file_path, "rb") as audio_file:
                 transcription = client.audio.transcriptions.create(
-                    model="whisper-large-v3",
+                    model="distil-whisper-large-v3-en",#"whisper-large-v3",
                     file=audio_file,
                     language='en'
                 )

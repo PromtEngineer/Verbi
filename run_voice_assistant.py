@@ -24,11 +24,16 @@ def main():
     """
     Main function to run the voice assistant.
     """
-    chat_history = [
-        {"role": "system", "content": """ You are a helpful Assistant called Verbi. 
-         You are friendly and fun and you will help the users with their requests.
-         Your answers are short and concise. """}
-    ]
+    # chat_history = [
+    #     {"role": "system", "content": """ You are a helpful Assistant called Verbi. 
+    #      You are friendly and fun and you will help the users with their requests.
+    #      Your answers are short and concise. """}
+    # ]
+    chat_history = [{
+            "role": "system",
+            "content": """You are Verbi, a comprehensive personal assistant with access to the user's calendar, emails, tasks, weather information, news, contacts, and expenses. 
+            Use the provided functions to retrieve information and assist the user. Always provide thoughtful and detailed responses. Assume today's date is 2024-08-24"""
+        }]
 
     while True:
         try:
