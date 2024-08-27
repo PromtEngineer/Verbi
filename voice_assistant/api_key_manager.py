@@ -28,6 +28,8 @@ def get_response_api_key():
         return Config.OPENAI_API_KEY
     elif Config.RESPONSE_MODEL == 'groq':
         return Config.GROQ_API_KEY
+    elif Config.RESPONSE_MODEL == 'gemini':
+        return Config.GEMINI_API_KEY
     return None
 
 def get_tts_api_key():

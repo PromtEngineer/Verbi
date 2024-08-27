@@ -4,6 +4,7 @@ from openai import OpenAI
 from groq import Groq
 import ollama
 import logging
+import google.generativeai as genai
 from voice_assistant.config import Config
 
 
@@ -42,6 +43,32 @@ def generate_response(model, api_key, chat_history, local_model_path=None):
                 # stream=True,
             )
             return response['message']['content']
+        elif model == 'gemini':
+            genai.configure(api_key=Config.GEMINI_API_KEY)
+            model = genai.GenerativeModel('gemini-1.5-flash')
+            # Convert chat history to the required format
+            # The current chat history structure is not compatible with the gemini model
+            # It expects the chat history to be in the format [{"role": "model", "parts": ""}] and [{"role": "user", "parts": ""}]
+            # However, the current chat history is in the format [{"role": "system", "content": ""}] and [{"role": "user", "content": ""}]
+            # To make it compatible, we need to convert the chat history by replacing "content" with "parts"
+            # Iterate over each message in the chat history
+            converted_chat_history = [
+                {"role": "model" if message["role"] == "system" else message["role"], "parts": message["content"]}
+                for message in chat_history
+            ]
+            # Extract and remove the last user message
+            user_text = ""
+            for message in reversed(converted_chat_history):
+                if message["role"] == "user":
+                    converted_chat_history.remove(message)
+                    user_text = message["parts"]
+                    break
+            # Start a new chat and generate a response
+            chat = model.start_chat(
+                history=converted_chat_history
+            )
+            response = chat.send_message(user_text)
+            return response.text
         elif model == 'local':
             # Placeholder for local LLM response generation
             return "Generated response from local model"

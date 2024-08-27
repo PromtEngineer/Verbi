@@ -13,7 +13,7 @@ Welcome to the Voice Assistant project! 🎙️ Our goal is to create a modular 
 ## Features 🧰
 
 - **Modular Design**: Easily switch between different models for transcription, response generation, and TTS.
-- **Support for Multiple APIs**: Integrates with OpenAI, Groq, and Deepgram APIs, along with placeholders for local models.
+- **Support for Multiple APIs**: Integrates with OpenAI, Groq, Gemini, and Deepgram APIs, along with placeholders for local models.
 - **Audio Recording and Playback**: Record audio from the microphone and play generated speech.
 - **Configuration Management**: Centralized configuration in `config.py` for easy setup and management.
 
@@ -79,6 +79,7 @@ Create a  `.env` file in the root directory and add your API keys:
 ```shell
     OPENAI_API_KEY=your_openai_api_key
     GROQ_API_KEY=your_groq_api_key
+    GEMINI_API_KEY=your_gemini_api_key
     DEEPGRAM_API_KEY=your_deepgram_api_key
     LOCAL_MODEL_PATH=path/to/local/model
 ```
@@ -90,12 +91,13 @@ Edit config.py to select the models you want to use:
     class Config:
         # Model selection
         TRANSCRIPTION_MODEL = 'groq'  # Options: 'openai', 'groq', 'deepgram', 'fastwhisperapi' 'local'
-        RESPONSE_MODEL = 'groq'       # Options: 'openai', 'groq', 'ollama', 'local'
+        RESPONSE_MODEL = 'groq'       # Options: 'openai', 'groq', 'ollama', 'gemini', 'local'
         TTS_MODEL = 'deepgram'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local', 'melotts'
 
         # API keys and paths
         OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
         GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+        GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
         DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
         LOCAL_MODEL_PATH = os.getenv("LOCAL_MODEL_PATH")
 ```
@@ -180,6 +182,7 @@ If you are running LLM locally via [Ollama](https://ollama.com/), make sure the 
 
 - **OpenAI**: Uses OpenAI's GPT-4 model.
 - **Groq**: Uses Groq's LLaMA model.
+- **Gemini**: Uses Gemini's 1.5 Flash model.
 - **Ollama**: Uses any model served via Ollama.
 - **Local**: Placeholder for a local language model.
 

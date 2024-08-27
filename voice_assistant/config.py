@@ -12,17 +12,18 @@ class Config:
     
     Attributes:
     TRANSCRIPTION_MODEL (str): The model to use for transcription ('openai', 'groq', 'deepgram', 'fastwhisperapi', 'local').
-    RESPONSE_MODEL (str): The model to use for response generation ('openai', 'groq', 'local').
+    RESPONSE_MODEL (str): The model to use for response generation ('openai', 'groq', 'gemini', 'local').
     TTS_MODEL (str): The model to use for text-to-speech ('openai', 'deepgram', 'elevenlabs', 'local').
     OPENAI_API_KEY (str): API key for OpenAI services.
     GROQ_API_KEY (str): API key for Groq services.
+    GEMINI_API_KEY (str): API key for Gemini services.
     DEEPGRAM_API_KEY (str): API key for Deepgram services.
     ELEVENLABS_API_KEY (str): API key for ElevenLabs services.
     LOCAL_MODEL_PATH (str): Path to the local model.
     """
     # Model selection
     TRANSCRIPTION_MODEL = 'openai'  # possible values: openai, groq, deepgram, fastwhisperapi
-    RESPONSE_MODEL = 'openai'  # possible values: openai, groq, ollama
+    RESPONSE_MODEL = 'openai'  # possible values: openai, groq, gemini, ollama
     TTS_MODEL = 'elevenlabs'  # possible values: openai, deepgram, elevenlabs, melotts, cartesia
 
     # currently using the MeloTTS for local models. here is how to get started:
@@ -32,10 +33,12 @@ class Config:
     OLLAMA_LLM="llama3:8b"
     GROQ_LLM="llama3-8b-8192"
     OPENAI_LLM="gpt-4o"
+    GEMINI_LLM="gemini-1.5-flash"
 
     # API keys and paths
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
     DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
     ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
     LOCAL_MODEL_PATH = os.getenv("LOCAL_MODEL_PATH")
@@ -57,8 +60,8 @@ class Config:
         """
         if Config.TRANSCRIPTION_MODEL not in ['openai', 'groq', 'deepgram', 'fastwhisperapi', 'local']:
             raise ValueError("Invalid TRANSCRIPTION_MODEL. Must be one of ['openai', 'groq', 'deepgram', 'fastwhisperapi', 'local']")
-        if Config.RESPONSE_MODEL not in ['openai', 'groq', 'ollama', 'local']:
-            raise ValueError("Invalid RESPONSE_MODEL. Must be one of ['openai', 'groq', 'local']")
+        if Config.RESPONSE_MODEL not in ['openai', 'groq', 'ollama', 'gemini', 'local']:
+            raise ValueError("Invalid RESPONSE_MODEL. Must be one of ['openai', 'groq', 'gemini', 'local']")
         if Config.TTS_MODEL not in ['openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local']:
             raise ValueError("Invalid TTS_MODEL. Must be one of ['openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local']")
 
@@ -73,7 +76,8 @@ class Config:
             raise ValueError("OPENAI_API_KEY is required for OpenAI models")
         if Config.RESPONSE_MODEL == 'groq' and not Config.GROQ_API_KEY:
             raise ValueError("GROQ_API_KEY is required for Groq models")
-
+        if Config.RESPONSE_MODEL == 'gemini' and not Config.GEMINI_API_KEY:
+            raise ValueError("GEMINI_API_KEY is required for Gemini models")
 
         if Config.TTS_MODEL == 'openai' and not Config.OPENAI_API_KEY:
             raise ValueError("OPENAI_API_KEY is required for OpenAI models")
