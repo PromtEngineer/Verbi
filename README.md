@@ -68,8 +68,8 @@ voice_assistant/
     conda create --name verbi python=3.10
     conda activate verbi
 ```
-3.  📦 **Install the required packages**
-
+3.  📦 **Install the required packages**  
+Note: On MacOS you must install portaudio first using brew `brew install portaudio`
 ```shell
    pip install -r requirements.txt
 ```
