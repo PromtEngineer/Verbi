@@ -100,7 +100,7 @@ Edit config.py to select the models you want to use:
         LOCAL_MODEL_PATH = os.getenv("LOCAL_MODEL_PATH")
 ```
 
-If you are running LLM locally via [Ollama](https://ollama.com/), make sure the Ollama server is runnig before starting verbi. 
+If you are running LLM locally via [Ollama](https://ollama.com/), make sure the Ollama server is running before starting verbi. 
 
 6. 🔊 **Configure ElevenLabs Jarvis' Voice**
 - Voice samples [here](https://github.com/PromtEngineer/Verbi/tree/main/voice_samples).
