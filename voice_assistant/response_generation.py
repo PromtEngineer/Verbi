@@ -1,13 +1,15 @@
 # voice_assistant/response_generation.py
 
+import logging
+
 from openai import OpenAI
 from groq import Groq
 import ollama
-import logging
+
 from voice_assistant.config import Config
 
 
-def generate_response(model, api_key, chat_history, local_model_path=None):
+def generate_response(model:str, api_key:str, chat_history:list, local_model_path:str=None):
     """
     Generate a response using the specified model.
     
@@ -22,26 +24,11 @@ def generate_response(model, api_key, chat_history, local_model_path=None):
     """
     try:
         if model == 'openai':
-            client = OpenAI(api_key=api_key)
-            response = client.chat.completions.create(
-                model=Config.OPENAI_LLM,
-                messages=chat_history
-            )
-            return response.choices[0].message.content
+            return _generate_openai_response(api_key, chat_history)
         elif model == 'groq':
-            client = Groq(api_key=api_key)
-            response = client.chat.completions.create(
-                model=Config.GROQ_LLM, #"llama3-8b-8192",
-                messages=chat_history
-            )
-            return response.choices[0].message.content
+            return _generate_groq_response(api_key, chat_history)
         elif model == 'ollama':
-            response = ollama.chat(
-                model=Config.OLLAMA_LLM,
-                messages=chat_history,
-                # stream=True,
-            )
-            return response['message']['content']
+            return _generate_ollama_response(chat_history)
         elif model == 'local':
             # Placeholder for local LLM response generation
             return "Generated response from local model"
@@ -50,3 +37,28 @@ def generate_response(model, api_key, chat_history, local_model_path=None):
     except Exception as e:
         logging.error(f"Failed to generate response: {e}")
         return "Error in generating response"
+
+def _generate_openai_response(api_key, chat_history):
+    client = OpenAI(api_key=api_key)
+    response = client.chat.completions.create(
+        model=Config.OPENAI_LLM,
+        messages=chat_history
+    )
+    return response.choices[0].message.content
+
+
+def _generate_groq_response(api_key, chat_history):
+    client = Groq(api_key=api_key)
+    response = client.chat.completions.create(
+        model=Config.GROQ_LLM,
+        messages=chat_history
+    )
+    return response.choices[0].message.content
+
+
+def _generate_ollama_response(chat_history):
+    response = ollama.chat(
+        model=Config.OLLAMA_LLM,
+        messages=chat_history,
+    )
+    return response['message']['content']

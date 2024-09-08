@@ -11,19 +11,19 @@ class Config:
     Configuration class to hold the model selection and API keys.
     
     Attributes:
-    TRANSCRIPTION_MODEL (str): The model to use for transcription ('openai', 'groq', 'deepgram', 'fastwhisperapi', 'local').
-    RESPONSE_MODEL (str): The model to use for response generation ('openai', 'groq', 'local').
-    TTS_MODEL (str): The model to use for text-to-speech ('openai', 'deepgram', 'elevenlabs', 'local').
-    OPENAI_API_KEY (str): API key for OpenAI services.
-    GROQ_API_KEY (str): API key for Groq services.
-    DEEPGRAM_API_KEY (str): API key for Deepgram services.
-    ELEVENLABS_API_KEY (str): API key for ElevenLabs services.
-    LOCAL_MODEL_PATH (str): Path to the local model.
+        TRANSCRIPTION_MODEL (str): The model to use for transcription ('openai', 'groq', 'deepgram', 'fastwhisperapi', 'local').
+        RESPONSE_MODEL (str): The model to use for response generation ('openai', 'groq', 'local').
+        TTS_MODEL (str): The model to use for text-to-speech ('openai', 'deepgram', 'elevenlabs', 'local').
+        OPENAI_API_KEY (str): API key for OpenAI services.
+        GROQ_API_KEY (str): API key for Groq services.
+        DEEPGRAM_API_KEY (str): API key for Deepgram services.
+        ELEVENLABS_API_KEY (str): API key for ElevenLabs services.
+        LOCAL_MODEL_PATH (str): Path to the local model.
     """
     # Model selection
-    TRANSCRIPTION_MODEL = 'openai'  # possible values: openai, groq, deepgram, fastwhisperapi
+    TRANSCRIPTION_MODEL = 'deepgram'  # possible values: openai, groq, deepgram, fastwhisperapi
     RESPONSE_MODEL = 'openai'  # possible values: openai, groq, ollama
-    TTS_MODEL = 'elevenlabs'  # possible values: openai, deepgram, elevenlabs, melotts, cartesia
+    TTS_MODEL = 'openai'  # possible values: openai, deepgram, elevenlabs, melotts, cartesia
 
     # currently using the MeloTTS for local models. here is how to get started:
     # https://github.com/myshell-ai/MeloTTS/blob/main/docs/install.md#linux-and-macos-install
@@ -53,34 +53,36 @@ class Config:
         Validate the configuration to ensure all necessary environment variables are set.
         
         Raises:
-        ValueError: If a required environment variable is not set.
+            ValueError: If a required environment variable is not set.
         """
-        if Config.TRANSCRIPTION_MODEL not in ['openai', 'groq', 'deepgram', 'fastwhisperapi', 'local']:
-            raise ValueError("Invalid TRANSCRIPTION_MODEL. Must be one of ['openai', 'groq', 'deepgram', 'fastwhisperapi', 'local']")
-        if Config.RESPONSE_MODEL not in ['openai', 'groq', 'ollama', 'local']:
-            raise ValueError("Invalid RESPONSE_MODEL. Must be one of ['openai', 'groq', 'local']")
-        if Config.TTS_MODEL not in ['openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local']:
-            raise ValueError("Invalid TTS_MODEL. Must be one of ['openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local']")
+        Config._validate_model('TRANSCRIPTION_MODEL', [
+            'openai', 'groq', 'deepgram', 'fastwhisperapi', 'local'])
+        Config._validate_model('RESPONSE_MODEL', [
+            'openai', 'groq', 'ollama', 'local'])
+        Config._validate_model('TTS_MODEL', [
+            'openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local'])
 
-        if Config.TRANSCRIPTION_MODEL == 'openai' and not Config.OPENAI_API_KEY:
-            raise ValueError("OPENAI_API_KEY is required for OpenAI models")
-        if Config.TRANSCRIPTION_MODEL == 'groq' and not Config.GROQ_API_KEY:
-            raise ValueError("GROQ_API_KEY is required for Groq models")
-        if Config.TRANSCRIPTION_MODEL == 'deepgram' and not Config.DEEPGRAM_API_KEY:
-            raise ValueError("DEEPGRAM_API_KEY is required for Deepgram models")
+        Config._validate_api_key('TRANSCRIPTION_MODEL', 'openai', 'OPENAI_API_KEY')
+        Config._validate_api_key('TRANSCRIPTION_MODEL', 'groq', 'GROQ_API_KEY')
+        Config._validate_api_key('TRANSCRIPTION_MODEL', 'deepgram', 'DEEPGRAM_API_KEY')
 
-        if Config.RESPONSE_MODEL == 'openai' and not Config.OPENAI_API_KEY:
-            raise ValueError("OPENAI_API_KEY is required for OpenAI models")
-        if Config.RESPONSE_MODEL == 'groq' and not Config.GROQ_API_KEY:
-            raise ValueError("GROQ_API_KEY is required for Groq models")
+        Config._validate_api_key('RESPONSE_MODEL', 'openai', 'OPENAI_API_KEY')
+        Config._validate_api_key('RESPONSE_MODEL', 'groq', 'GROQ_API_KEY')
 
+        Config._validate_api_key('TTS_MODEL', 'openai', 'OPENAI_API_KEY')
+        Config._validate_api_key('TTS_MODEL', 'deepgram', 'DEEPGRAM_API_KEY')
+        Config._validate_api_key('TTS_MODEL', 'elevenlabs', 'ELEVENLABS_API_KEY')
+        Config._validate_api_key('TTS_MODEL', 'cartesia', 'CARTESIA_API_KEY')
 
-        if Config.TTS_MODEL == 'openai' and not Config.OPENAI_API_KEY:
-            raise ValueError("OPENAI_API_KEY is required for OpenAI models")
-        if Config.TTS_MODEL == 'deepgram' and not Config.DEEPGRAM_API_KEY:
-            raise ValueError("DEEPGRAM_API_KEY is required for Deepgram models")
-        if Config.TTS_MODEL == 'elevenlabs' and not Config.ELEVENLABS_API_KEY:
-            raise ValueError("ELEVENLABS_API_KEY is required for ElevenLabs models")
-        if Config.TTS_MODEL == 'cartesia' and not Config.CARTESIA_API_KEY:
-            raise ValueError("CARTESIA_API_KEY is required for Cartesia models")
-
+    @staticmethod
+    def _validate_model(attribute, valid_options):
+        model = getattr(Config, attribute)
+        if model not in valid_options:
+            raise ValueError(
+                f"Invalid {attribute}. Must be one of {valid_options}"
+            )
+        
+    @staticmethod
+    def _validate_api_key(model_attr, model_value, api_key_attr):
+        if getattr(Config, model_attr) == model_value and not getattr(Config, api_key_attr):
+            raise ValueError(f"{api_key_attr} is required for {model_value} models")
