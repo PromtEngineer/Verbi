@@ -5,7 +5,7 @@ import logging
 from openai import OpenAI
 from groq import Groq
 import ollama
-
+from cerebras.cloud.sdk import Cerebras
 from voice_assistant.config import Config
 
 
@@ -14,7 +14,7 @@ def generate_response(model:str, api_key:str, chat_history:list, local_model_pat
     Generate a response using the specified model.
     
     Args:
-    model (str): The model to use for response generation ('openai', 'groq', 'local').
+    model (str): The model to use for response generation ('openai', 'groq', 'local', 'cerebras').
     api_key (str): The API key for the response generation service.
     chat_history (list): The chat history as a list of messages.
     local_model_path (str): The path to the local model (if applicable).
@@ -32,6 +32,8 @@ def generate_response(model:str, api_key:str, chat_history:list, local_model_pat
         elif model == 'local':
             # Placeholder for local LLM response generation
             return "Generated response from local model"
+        elif model == 'cerebras':
+            return _generate_cerebras_response(chat_history)
         else:
             raise ValueError("Unsupported response generation model")
     except Exception as e:
@@ -62,3 +64,16 @@ def _generate_ollama_response(chat_history):
         messages=chat_history,
     )
     return response['message']['content']
+
+
+def _generate_cerebras_response(chat_history):
+    try:
+        cerebras_client = Cerebras(api_key=Config.CEREBRAS_API_KEY)
+        chat_completion = cerebras_client.chat.completions.create(
+            messages=chat_history,
+            model=Config.CEREBRAS_MODEL,
+        )
+        return chat_completion.choices[0].message.content
+    except Exception as e:
+        logging.error(f"Error generating Cerebras response: {e}")
+        return "I'm sorry, I couldn't generate a response at the moment."
