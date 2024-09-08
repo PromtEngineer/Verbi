@@ -36,3 +36,4 @@ soundfile
 ollama
 pydub
 cerebras_cloud_sdk
+google-generativeai

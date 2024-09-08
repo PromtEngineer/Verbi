@@ -1,6 +1,7 @@
 # voice_assistant/response_generation.py
 
 import logging
+import google.generativeai as genai
 
 from openai import OpenAI
 from groq import Groq
@@ -14,7 +15,7 @@ def generate_response(model:str, api_key:str, chat_history:list, local_model_pat
     Generate a response using the specified model.
     
     Args:
-    model (str): The model to use for response generation ('openai', 'groq', 'local', 'cerebras').
+    model (str): The model to use for response generation ('openai', 'groq', 'ollama', 'cerebras', 'gemini', 'local').
     api_key (str): The API key for the response generation service.
     chat_history (list): The chat history as a list of messages.
     local_model_path (str): The path to the local model (if applicable).
@@ -34,6 +35,8 @@ def generate_response(model:str, api_key:str, chat_history:list, local_model_pat
             return "Generated response from local model"
         elif model == 'cerebras':
             return _generate_cerebras_response(chat_history)
+        elif model == 'gemini':
+            return _generate_gemini_response(chat_history)
         else:
             raise ValueError("Unsupported response generation model")
     except Exception as e:
@@ -76,4 +79,24 @@ def _generate_cerebras_response(chat_history):
         return chat_completion.choices[0].message.content
     except Exception as e:
         logging.error(f"Error generating Cerebras response: {e}")
+        return "I'm sorry, I couldn't generate a response at the moment."
+
+
+def _generate_gemini_response(chat_history):
+    try:
+        genai.configure(api_key=Config.GEMINI_API_KEY)
+        model = genai.GenerativeModel(Config.GEMINI_MODEL)
+        chat = model.start_chat(history=[])
+        
+        for message in chat_history:
+            if message['role'] == 'user':
+                chat.send_message(message['content'])
+            elif message['role'] == 'assistant':
+                # Simulate assistant messages in the chat history
+                chat.history.append({"role": "model", "parts": [message['content']]})
+        
+        response = chat.send_message(chat_history[-1]['content'])
+        return response.text
+    except Exception as e:
+        logging.error(f"Error generating Gemini response: {e}")
         return "I'm sorry, I couldn't generate a response at the moment."
