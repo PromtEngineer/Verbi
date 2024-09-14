@@ -75,7 +75,7 @@ def _generate_gemini_response(chat_history):
     # To make it compatible, we need to convert the chat history by replacing "content" with "parts"
     # Iterate over each message in the chat history
     converted_chat_history = [
-        {"role": "model" if message["role"] == "system" else message["role"], "parts": message["content"]}
+        {"role": "model" if (message["role"] == "system" or message["role"] == "assistant") else message["role"], "parts": message["content"]}
         for message in chat_history
     ]
     # Extract and remove the last user message
