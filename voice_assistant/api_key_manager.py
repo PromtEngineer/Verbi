@@ -2,6 +2,33 @@
 
 from voice_assistant.config import Config
 
+API_KEY_MAPPING= {
+    "transcription":{
+        "openai": Config.OPENAI_API_KEY,
+        "groq": Config.GROQ_API_KEY,
+        "deepgram": Config.DEEPGRAM_API_KEY
+    },
+    "response":{
+        "openai":Config.OPENAI_API_KEY,
+        "groq": Config.GROQ_API_KEY,
+        "gemini": Config.GEMINI_API_KEY
+    },
+    "tts": {
+        "openai": Config.OPENAI_API_KEY,
+        "deepgram":Config.DEEPGRAM_API_KEY,
+        "elevenlabs": Config.ELEVENLABS_API_KEY
+    }
+}
+
+def get_api_key(service, model):
+    """
+    Select the API key for the specified service and model
+    
+    Returns:
+    str: The API key for the transcription, response or tts service.
+    """
+    return API_KEY_MAPPING.get(service, {}).get(model)
+
 def get_transcription_api_key():
     """
     Select the correct API key for transcription based on the configured model.
@@ -9,13 +36,7 @@ def get_transcription_api_key():
     Returns:
     str: The API key for the transcription service.
     """
-    if Config.TRANSCRIPTION_MODEL == 'openai':
-        return Config.OPENAI_API_KEY
-    elif Config.TRANSCRIPTION_MODEL == 'groq':
-        return Config.GROQ_API_KEY
-    elif Config.TRANSCRIPTION_MODEL == 'deepgram':
-        return Config.DEEPGRAM_API_KEY
-    return None
+    return get_api_key("transcription", Config.TRANSCRIPTION_MODEL)
 
 def get_response_api_key():
     """
@@ -24,13 +45,7 @@ def get_response_api_key():
     Returns:
     str: The API key for the response generation service.
     """
-    if Config.RESPONSE_MODEL == 'openai':
-        return Config.OPENAI_API_KEY
-    elif Config.RESPONSE_MODEL == 'groq':
-        return Config.GROQ_API_KEY
-    elif Config.RESPONSE_MODEL == 'gemini':
-        return Config.GEMINI_API_KEY
-    return None
+    return get_api_key("response", Config.RESPONSE_MODEL)
 
 def get_tts_api_key():
     """
@@ -39,10 +54,4 @@ def get_tts_api_key():
     Returns:
     str: The API key for the TTS service.
     """
-    if Config.TTS_MODEL == 'openai':
-        return Config.OPENAI_API_KEY
-    elif Config.TTS_MODEL == 'deepgram':
-        return Config.DEEPGRAM_API_KEY
-    elif Config.TTS_MODEL == 'elevenlabs':
-        return Config.ELEVENLABS_API_KEY
-    return None
+    return get_api_key("tts", Config.TTS_MODEL)
