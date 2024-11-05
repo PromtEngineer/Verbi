@@ -17,12 +17,17 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 # Initialize colorama
 init(autoreset=True)
 
+import threading
+
+
 def main():
     """
     Main function to run the voice assistant.
     """
     chat_history = [
-        {"role": "system", "content": "You are a helpful Assistant. Keep your answers short and concise."}
+        {"role": "system", "content": """ You are a helpful Assistant called Verbi. 
+         You are friendly and fun and you will help the users with their requests.
+         Your answers are short and concise. """}
     ]
 
     while True:
@@ -72,7 +77,10 @@ def main():
             text_to_speech(Config.TTS_MODEL, tts_api_key, response_text, output_file, Config.LOCAL_MODEL_PATH)
 
             # Play the generated speech audio
-            play_audio(output_file)
+            if Config.TTS_MODEL=="cartesia":
+                pass
+            else:
+                play_audio(output_file)
             
             # Clean up audio files
             # delete_file(Config.INPUT_AUDIO)
