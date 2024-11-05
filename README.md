@@ -1,4 +1,7 @@
 # VERBI - Voice Assistant 🎙️
+<p align="center">
+<a href="https://trendshift.io/repositories/11584" target="_blank"><img src="https://trendshift.io/api/badge/repositories/11584" alt="PromtEngineer%2FVerbi | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+</p>
 
 [![GitHub Stars](https://img.shields.io/github/stars/PromtEngineer/Verbi?style=social)](https://github.com/PromtEngineer/Verbi/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/PromtEngineer/Verbi?style=social)](https://github.com/PromtEngineer/Verbi/network/members)
