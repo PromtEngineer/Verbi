@@ -10,7 +10,8 @@ API_KEY_MAPPING= {
     },
     "response":{
         "openai":Config.OPENAI_API_KEY,
-        "groq": Config.GROQ_API_KEY
+        "groq": Config.GROQ_API_KEY,
+        "gemini": Config.GEMINI_API_KEY
     },
     "tts": {
         "openai": Config.OPENAI_API_KEY,

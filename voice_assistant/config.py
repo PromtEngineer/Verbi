@@ -22,7 +22,7 @@ class Config:
     """
     # Model selection
     TRANSCRIPTION_MODEL = 'deepgram'  # possible values: openai, groq, deepgram, fastwhisperapi
-    RESPONSE_MODEL = 'openai'  # possible values: openai, groq, ollama
+    RESPONSE_MODEL = 'openai'  # possible values: openai, groq, ollama, gemini
     TTS_MODEL = 'openai'  # possible values: openai, deepgram, elevenlabs, melotts, cartesia
 
     # currently using the MeloTTS for local models. here is how to get started:
@@ -32,10 +32,12 @@ class Config:
     OLLAMA_LLM="llama3:8b"
     GROQ_LLM="llama3-8b-8192"
     OPENAI_LLM="gpt-4o"
+    GEMINI_LLM="gemini-1.5-flash"
 
     # API keys and paths
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
     DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
     ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
     LOCAL_MODEL_PATH = os.getenv("LOCAL_MODEL_PATH")
@@ -58,7 +60,7 @@ class Config:
         Config._validate_model('TRANSCRIPTION_MODEL', [
             'openai', 'groq', 'deepgram', 'fastwhisperapi', 'local'])
         Config._validate_model('RESPONSE_MODEL', [
-            'openai', 'groq', 'ollama', 'local'])
+            'openai', 'groq', 'ollama', 'gemini', 'local'])
         Config._validate_model('TTS_MODEL', [
             'openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local'])
 
@@ -68,6 +70,7 @@ class Config:
 
         Config._validate_api_key('RESPONSE_MODEL', 'openai', 'OPENAI_API_KEY')
         Config._validate_api_key('RESPONSE_MODEL', 'groq', 'GROQ_API_KEY')
+        Config._validate_api_key('RESPONSE_MODEL', 'gemini', 'GEMINI_API_KEY')
 
         Config._validate_api_key('TTS_MODEL', 'openai', 'OPENAI_API_KEY')
         Config._validate_api_key('TTS_MODEL', 'deepgram', 'DEEPGRAM_API_KEY')

@@ -19,6 +19,7 @@ SpeechRecognition==3.10.4
 tqdm==4.66.4
 typing_extensions==4.11.0
 urllib3==2.2.1
+google-ai-generativelanguage==0.6.6
 colorama
 deepgram-sdk
 groq
