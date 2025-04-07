@@ -4,12 +4,14 @@ import json
 import pyaudio
 import elevenlabs
 import soundfile as sf
+import requests
 
 from openai import OpenAI
 from deepgram import DeepgramClient, SpeakOptions
 from elevenlabs.client import ElevenLabs
 from cartesia import Cartesia
 
+from voice_assistant.config import Config
 from voice_assistant.local_tts_generation import generate_audio_file_melotts
 
 def text_to_speech(model: str, api_key:str, text:str, output_file_path:str, local_model_path:str=None):
@@ -101,6 +103,24 @@ def text_to_speech(model: str, api_key:str, text:str, output_file_path:str, loca
 
         elif model == "melotts": # this is a local model
             generate_audio_file_melotts(text=text, filename=output_file_path)
+
+        elif model == "piper":  # this is a local model
+            try:
+                response = requests.post(
+                    f"{Config.PIPER_SERVER_URL}/synthesize/",
+                    json={"text": text},
+                    headers={"Content-Type": "application/json"}
+                )
+                
+                if response.status_code == 200:
+                    with open(Config.PIPER_OUTPUT_FILE, "wb") as f:
+                        f.write(response.content)
+                    logging.info(f"Piper TTS output saved to {Config.PIPER_OUTPUT_FILE}")
+                else:
+                    logging.error(f"Piper TTS API error: {response.status_code} - {response.text}")
+
+            except Exception as e:
+                logging.error(f"Piper TTS request failed: {e}")
         
         elif model == 'local':
             with open(output_file_path, "wb") as f:

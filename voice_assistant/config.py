@@ -23,7 +23,11 @@ class Config:
     # Model selection
     TRANSCRIPTION_MODEL = 'deepgram'  # possible values: openai, groq, deepgram, fastwhisperapi
     RESPONSE_MODEL = 'openai'  # possible values: openai, groq, ollama
-    TTS_MODEL = 'openai'  # possible values: openai, deepgram, elevenlabs, melotts, cartesia
+    TTS_MODEL = 'openai'  # possible values: openai, deepgram, elevenlabs, melotts, cartesia, piper
+
+    # Piper Server configuration
+    PIPER_SERVER_URL = os.getenv("PIPER_SERVER_URL")
+    PIPER_OUTPUT_FILE = "output.wav"
 
     # currently using the MeloTTS for local models. here is how to get started:
     # https://github.com/myshell-ai/MeloTTS/blob/main/docs/install.md#linux-and-macos-install
@@ -60,7 +64,7 @@ class Config:
         Config._validate_model('RESPONSE_MODEL', [
             'openai', 'groq', 'ollama', 'local'])
         Config._validate_model('TTS_MODEL', [
-            'openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local'])
+            'openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local', 'piper'])
 
         Config._validate_api_key('TRANSCRIPTION_MODEL', 'openai', 'OPENAI_API_KEY')
         Config._validate_api_key('TRANSCRIPTION_MODEL', 'groq', 'GROQ_API_KEY')
