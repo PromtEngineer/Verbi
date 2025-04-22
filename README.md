@@ -37,6 +37,7 @@ voice_assistant/
 │   ├── local_tts_generation.py
 ├── .env
 ├── run_voice_assistant.py
+├── piper_server.py
 ├── setup.py
 ├── requirements.txt
 └── README.md
@@ -84,6 +85,7 @@ Create a  `.env` file in the root directory and add your API keys:
     GROQ_API_KEY=your_groq_api_key
     DEEPGRAM_API_KEY=your_deepgram_api_key
     LOCAL_MODEL_PATH=path/to/local/model
+    PIPER_SERVER_URL=server_url
 ```
 5. 🧩 **Configure the models**
 
@@ -94,7 +96,7 @@ Edit config.py to select the models you want to use:
         # Model selection
         TRANSCRIPTION_MODEL = 'groq'  # Options: 'openai', 'groq', 'deepgram', 'fastwhisperapi' 'local'
         RESPONSE_MODEL = 'groq'       # Options: 'openai', 'groq', 'ollama', 'local'
-        TTS_MODEL = 'deepgram'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local', 'melotts'
+        TTS_MODEL = 'deepgram'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local', 'melotts', 'piper'
 
         # API keys and paths
         OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -165,7 +167,46 @@ If you are running LLM locally via [Ollama](https://ollama.com/), make sure the 
    In order to use the local TTS model, you will need to update the `config.py` file by setting: 
 
    ```shell
-      TTS_MODEL = 'melotts'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local', 'melotts'
+      TTS_MODEL = 'melotts'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local', 'melotts', 'piper'
+   ```
+
+9. 🎤 **Install Local TTS - Piper**
+
+   _A faster and lightweight alternative to MeloTTS_
+
+   ***Download the Piper Binary and the voice from Github***
+
+   Use the following [link](https://github.com/rhasspy/piper) to install Piper Binary for your operating system.
+
+   Use the following [link](https://github.com/rhasspy/piper?tab=readme-ov-file#voices) to download Piper voices.
+   Each voice will have two files:
+   | `.onnx` | Actual voice model |
+   | `.onnx.json` | Model configuration |
+
+   For example:
+
+   ```shell
+   models/en_US-lessac-medium/
+   ├── en_US-lessac-medium.onnx
+   ├── en_US-lessac-medium.onnx.json
+   ```
+
+   Once the binary and voice is downloaded on your system, edit the `piper_server.py` and provide the binary and voice paths.
+   ```shell
+      piper_executable = "./piper/piper"  #example path to the piper binary 
+      model_path = "en_US-lessac-medium.onnx" #example path to the .onnx file
+   ```
+
+   You can start the api server using the following command. 
+   ```shell
+      python piper_server.py
+   ```
+
+   The `piper_server.py` file implements as fastapi server that will listen to incoming text and will generate audio using Piper model. 
+   In order to use the local TTS model, you will need to update the `config.py` file by setting: 
+
+   ```shell
+      TTS_MODEL = 'piper'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local', 'melotts','piper'
    ```
    You can run the main file to start using verbi with local models. 
 
