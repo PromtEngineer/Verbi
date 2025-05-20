@@ -1,7 +1,7 @@
 # voice_assistant/response_generation.py
 
 import logging
-import google.generativeai as genai
+from google import genai
 
 from openai import OpenAI
 from groq import Groq
@@ -84,18 +84,22 @@ def _generate_cerebras_response(chat_history):
 
 def _generate_gemini_response(chat_history):
     try:
-        genai.configure(api_key=Config.GEMINI_API_KEY)
-        model = genai.GenerativeModel(Config.GEMINI_MODEL)
-        chat = model.start_chat(history=[])
+        client = genai.Client(api_key=Config.GEMINI_API_KEY)
         
-        for message in chat_history:
-            if message['role'] == 'user':
-                chat.send_message(message['content'])
-            elif message['role'] == 'assistant':
-                # Simulate assistant messages in the chat history
-                chat.history.append({"role": "model", "parts": [message['content']]})
+        # Convert chat_history to the format expected by the new SDK
+        gemini_history = []
+        for message in chat_history[:-1]: # Exclude the last message, it will be sent separately
+            role = "user" if message['role'] == 'user' else "model"
+            gemini_history.append({
+                "role": role,
+                "parts": [{"text": message['content']}]
+            })
+
+        chat = client.chats.create(model=Config.GEMINI_MODEL, history=gemini_history)
         
-        response = chat.send_message(chat_history[-1]['content'])
+        # Send the last user message
+        last_message_content = chat_history[-1]['content']
+        response = chat.send_message(last_message_content)
         return response.text
     except Exception as e:
         logging.error(f"Error generating Gemini response: {e}")
