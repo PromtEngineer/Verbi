@@ -94,7 +94,7 @@ Edit config.py to select the models you want to use:
 ```shell
     class Config:
         # Model selection
-        TRANSCRIPTION_MODEL = 'groq'  # Options: 'openai', 'groq', 'deepgram', 'fastwhisperapi' 'local'
+        TRANSCRIPTION_MODEL = 'groq'  # Options: 'openai', 'groq', 'deepgram', 'fastwhisperapi', 'local'
         RESPONSE_MODEL = 'groq'       # Options: 'openai', 'groq', 'ollama', 'local'
         TTS_MODEL = 'deepgram'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local', 'melotts', 'piper'
 
@@ -105,7 +105,7 @@ Edit config.py to select the models you want to use:
         LOCAL_MODEL_PATH = os.getenv("LOCAL_MODEL_PATH")
 ```
 
-If you are running LLM locally via [Ollama](https://ollama.com/), make sure the Ollama server is runnig before starting verbi. 
+If you are running LLM locally via [Ollama](https://ollama.com/), make sure the Ollama server is running before starting Verbi. 
 
 6. 🔊 **Configure ElevenLabs Jarvis' Voice**
 - Voice samples [here](https://github.com/PromtEngineer/Verbi/tree/main/voice_samples).
@@ -163,7 +163,7 @@ If you are running LLM locally via [Ollama](https://ollama.com/), make sure the 
    ```shell
       python voice_assistant/local_tts_api.py
    ```
-   The `local_tts_api.py` file implements as fastapi server that will listen to incoming text and will generate audio using MeloTTS model. 
+   The `local_tts_api.py` file implements a fastapi server that will listen to incoming text and will generate audio using the MeloTTS model. 
    In order to use the local TTS model, you will need to update the `config.py` file by setting: 
 
    ```shell
@@ -206,9 +206,9 @@ If you are running LLM locally via [Ollama](https://ollama.com/), make sure the 
    In order to use the local TTS model, you will need to update the `config.py` file by setting: 
 
    ```shell
-      TTS_MODEL = 'piper'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local', 'melotts','piper'
+      TTS_MODEL = 'piper'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local', 'melotts', 'piper'
    ```
-   You can run the main file to start using verbi with local models. 
+   You can run the main file to start using Verbi with local models. 
 
 ## Model Options ⚙️
 
@@ -236,7 +236,7 @@ If you are running LLM locally via [Ollama](https://ollama.com/), make sure the 
 
 ## Detailed Module Descriptions  📘
 
-- **`run_verbi.py`**: Main script to run the voice assistant.
+- **`run_verbi.py`**: The main script is to run the voice assistant.
 - **`voice_assistant/config.py`**: Manages configuration settings and API keys.
 - **`voice_assistant/api_key_manager.py`**: Handles retrieval of API keys based on configured models.
 - **`voice_assistant/audio.py`**: Functions for recording and playing audio.
@@ -245,7 +245,7 @@ If you are running LLM locally via [Ollama](https://ollama.com/), make sure the 
 - **`voice_assistant/text_to_speech.py`**: Manages converting text responses into speech.
 - **`voice_assistant/utils.py`**: Contains utility functions like deleting files.
 - **`voice_assistant/local_tts_api.py`**: Contains the api implementation to run the MeloTTS model.
-- **`voice_assistant/local_tts_generation.py`**: Contains the code to use the MeloTTS api to generated audio.
+- **`voice_assistant/local_tts_generation.py`**: Contains the code to use the MeloTTS api to generate audio.
 - **`voice_assistant/__init__.py`**: Initializes the `voice_assistant` package.
 
 ## Roadmap 🛤️🛤️🛤️
@@ -254,7 +254,7 @@ Here's what's next for the Voice Assistant project:
 
 1. **Add Support for Streaming**: Enable real-time streaming of audio input and output.
 2. **Add Support for ElevenLabs and Enhanced Deepgram for TTS**: Integrate additional TTS options for higher quality and variety.
-3. **Add Filler Audios**: Include background or filler audios while waiting for model responses to enhance user experience.
+3. **Add Filler Audios**: Include background or filler audios while waiting for model responses to enhance the user experience.
 4. **Add Support for Local Models Across the Board**: Expand support for local models in transcription, response generation, and TTS.
 
 ## Contributing 🤝
