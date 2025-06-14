@@ -139,3 +139,31 @@ cython_debug/
 # Exception for voice_samples
 !voice_samples/*.mp3
 !voice_samples/*.wav
+
+# Claude settings
+.claude/*
+
+# Additional testing artifacts
+test-results/
+.benchmarks/
+.mutmut-cache
+
+# IDE files
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-*
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
