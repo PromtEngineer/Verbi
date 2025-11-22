@@ -7,9 +7,10 @@ import soundfile as sf
 import requests
 
 from openai import OpenAI
-from deepgram import DeepgramClient, SpeakOptions
+from deepgram import DeepgramClient
 from elevenlabs.client import ElevenLabs
 from cartesia import Cartesia
+from gtts import gTTS
 
 from voice_assistant.config import Config
 from voice_assistant.local_tts_generation import generate_audio_file_melotts
@@ -41,11 +42,11 @@ def text_to_speech(model: str, api_key:str, text:str, output_file_path:str, loca
 
         elif model == 'deepgram':
             client = DeepgramClient(api_key=api_key)
-            options = SpeakOptions(
-                model="aura-arcas-en", #"aura-luna-en", # https://developers.deepgram.com/docs/tts-models
-                encoding="linear16",
-                container="wav"
-            )
+            options = {
+                "model": "aura-arcas-en", #"aura-luna-en", # https://developers.deepgram.com/docs/tts-models
+                "encoding": "linear16",
+                "container": "wav"
+            }
             SPEAK_OPTIONS = {"text": text}
             response = client.speak.v("1").save(output_file_path, SPEAK_OPTIONS, options)
         
@@ -55,7 +56,7 @@ def text_to_speech(model: str, api_key:str, text:str, output_file_path:str, loca
                 text=text, 
                 voice="Paul J.", 
                 output_format="mp3_22050_32", 
-                model="eleven_turbo_v2"
+                model="eleven_flash_v2"
             )
             elevenlabs.save(audio, output_file_path)
         
@@ -66,7 +67,7 @@ def text_to_speech(model: str, api_key:str, text:str, output_file_path:str, loca
             voice = client.voices.get(id=voice_id)
 
             # You can check out our models at https://docs.cartesia.ai/getting-started/available-models
-            model_id = "sonic-english"
+            model_id = "sonic-2"
 
             # You can find the supported `output_format`s at https://docs.cartesia.ai/api-reference/endpoints/stream-speech-server-sent-events
             output_format = {
@@ -122,6 +123,10 @@ def text_to_speech(model: str, api_key:str, text:str, output_file_path:str, loca
             except Exception as e:
                 logging.error(f"Piper TTS request failed: {e}")
         
+        elif model == 'google':
+            tts = gTTS(text=text, lang='en')
+            tts.save(output_file_path)
+
         elif model == 'local':
             with open(output_file_path, "wb") as f:
                 f.write(b"Local TTS audio data")
