@@ -21,8 +21,8 @@ class Config:
         LOCAL_MODEL_PATH (str): Path to the local model.
     """
     # Model selection
-    TRANSCRIPTION_MODEL = 'deepgram'  # possible values: openai, groq, deepgram, fastwhisperapi
-    RESPONSE_MODEL = 'openai'  # possible values: openai, groq, ollama
+    TRANSCRIPTION_MODEL = 'deepgram'  # possible values: openai, groq, deepgram, fastwhisperapi, assemblyai
+    RESPONSE_MODEL = 'openai'  # possible values: openai, groq, ollama, anthropic, google
     TTS_MODEL = 'openai'  # possible values: openai, deepgram, elevenlabs, melotts, cartesia, piper
 
     # Piper Server configuration
@@ -33,9 +33,11 @@ class Config:
     # https://github.com/myshell-ai/MeloTTS/blob/main/docs/install.md#linux-and-macos-install
 
     # LLM Selection
-    OLLAMA_LLM="llama3:8b"
-    GROQ_LLM="llama3-8b-8192"
+    OLLAMA_LLM="llama3.1:8b"
+    GROQ_LLM="llama-3.1-8b-instant"
     OPENAI_LLM="gpt-4o"
+    ANTHROPIC_LLM="claude-3-5-sonnet-latest"
+    GOOGLE_LLM="gemini-1.5-flash-002"
 
     # API keys and paths
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -44,6 +46,9 @@ class Config:
     ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
     LOCAL_MODEL_PATH = os.getenv("LOCAL_MODEL_PATH")
     CARTESIA_API_KEY = os.getenv("CARTESIA_API_KEY")
+    ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
+    GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+    ASSEMBLYAI_API_KEY = os.getenv("ASSEMBLYAI_API_KEY")
 
     # for serving the MeloTTS model
     TTS_PORT_LOCAL = 5150
@@ -60,18 +65,21 @@ class Config:
             ValueError: If a required environment variable is not set.
         """
         Config._validate_model('TRANSCRIPTION_MODEL', [
-            'openai', 'groq', 'deepgram', 'fastwhisperapi', 'local'])
+            'openai', 'groq', 'deepgram', 'fastwhisperapi', 'local', 'assemblyai'])
         Config._validate_model('RESPONSE_MODEL', [
-            'openai', 'groq', 'ollama', 'local'])
+            'openai', 'groq', 'ollama', 'local', 'anthropic', 'google'])
         Config._validate_model('TTS_MODEL', [
-            'openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local', 'piper'])
+            'openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local', 'piper', 'google'])
 
         Config._validate_api_key('TRANSCRIPTION_MODEL', 'openai', 'OPENAI_API_KEY')
         Config._validate_api_key('TRANSCRIPTION_MODEL', 'groq', 'GROQ_API_KEY')
         Config._validate_api_key('TRANSCRIPTION_MODEL', 'deepgram', 'DEEPGRAM_API_KEY')
+        Config._validate_api_key('TRANSCRIPTION_MODEL', 'assemblyai', 'ASSEMBLYAI_API_KEY')
 
         Config._validate_api_key('RESPONSE_MODEL', 'openai', 'OPENAI_API_KEY')
         Config._validate_api_key('RESPONSE_MODEL', 'groq', 'GROQ_API_KEY')
+        Config._validate_api_key('RESPONSE_MODEL', 'anthropic', 'ANTHROPIC_API_KEY')
+        Config._validate_api_key('RESPONSE_MODEL', 'google', 'GOOGLE_API_KEY')
 
         Config._validate_api_key('TTS_MODEL', 'openai', 'OPENAI_API_KEY')
         Config._validate_api_key('TTS_MODEL', 'deepgram', 'DEEPGRAM_API_KEY')

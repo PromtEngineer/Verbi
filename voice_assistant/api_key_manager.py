@@ -6,16 +6,20 @@ API_KEY_MAPPING= {
     "transcription":{
         "openai": Config.OPENAI_API_KEY,
         "groq": Config.GROQ_API_KEY,
-        "deepgram": Config.DEEPGRAM_API_KEY
+        "deepgram": Config.DEEPGRAM_API_KEY,
+        "assemblyai": Config.ASSEMBLYAI_API_KEY
     },
     "response":{
         "openai":Config.OPENAI_API_KEY,
-        "groq": Config.GROQ_API_KEY
+        "groq": Config.GROQ_API_KEY,
+        "anthropic": Config.ANTHROPIC_API_KEY,
+        "google": Config.GOOGLE_API_KEY
     },
     "tts": {
         "openai": Config.OPENAI_API_KEY,
         "deepgram":Config.DEEPGRAM_API_KEY,
-        "elevenlabs": Config.ELEVENLABS_API_KEY
+        "elevenlabs": Config.ELEVENLABS_API_KEY,
+        "google": Config.GOOGLE_API_KEY
     }
 }
 

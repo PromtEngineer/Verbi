@@ -8,7 +8,8 @@ import time
 from colorama import Fore, init
 from openai import OpenAI
 from groq import Groq
-from deepgram import DeepgramClient,PrerecordedOptions,FileSource
+from deepgram import DeepgramClient
+import assemblyai as aai
 
 fast_url = "http://localhost:8000"
 checked_fastwhisperapi = False
@@ -48,6 +49,8 @@ def transcribe_audio(model, api_key, audio_file_path, local_model_path=None):
             return _transcribe_with_deepgram(api_key, audio_file_path)
         elif model == 'fastwhisperapi':
             return _transcribe_with_fastwhisperapi(audio_file_path)
+        elif model == 'assemblyai':
+            return _transcribe_with_assemblyai(api_key, audio_file_path)
         elif model == 'local':
             # Placeholder for local STT model transcription
             return "Transcribed text from local model"
@@ -72,7 +75,7 @@ def _transcribe_with_groq(api_key, audio_file_path):
     client = Groq(api_key=api_key)
     with open(audio_file_path, "rb") as audio_file:
         transcription = client.audio.transcriptions.create(
-            model="whisper-large-v3",
+            model="whisper-large-v3-turbo",
             file=audio_file,
             language='en'
         )
@@ -86,7 +89,7 @@ def _transcribe_with_deepgram(api_key, audio_file_path):
             buffer_data = file.read()
 
         payload = {"buffer": buffer_data}
-        options = PrerecordedOptions(model="nova-2", smart_format=True)
+        options = {"model": "nova-2", "smart_format": True}
         response = deepgram.listen.prerecorded.v("1").transcribe_file(payload, options)
         data = json.loads(response.to_json())
 
@@ -113,3 +116,13 @@ def _transcribe_with_fastwhisperapi(audio_file_path):
     response = requests.post(endpoint, files=files, data=data, headers=headers)
     response_json = response.json()
     return response_json.get('text', 'No text found in the response.')
+
+def _transcribe_with_assemblyai(api_key, audio_file_path):
+    aai.settings.api_key = api_key
+    transcriber = aai.Transcriber()
+    transcript = transcriber.transcribe(audio_file_path)
+
+    if transcript.status == aai.TranscriptStatus.error:
+        raise Exception(f"AssemblyAI Transcription Error: {transcript.error}")
+
+    return transcript.text
