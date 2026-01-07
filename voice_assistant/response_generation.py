@@ -27,6 +27,8 @@ def generate_response(model:str, api_key:str, chat_history:list, local_model_pat
             return _generate_openai_response(api_key, chat_history)
         elif model == 'groq':
             return _generate_groq_response(api_key, chat_history)
+        elif model == 'openrouter':
+            return _generate_openrouter_response(api_key, chat_history)
         elif model == 'ollama':
             return _generate_ollama_response(chat_history)
         elif model == 'local':
@@ -62,3 +64,14 @@ def _generate_ollama_response(chat_history):
         messages=chat_history,
     )
     return response['message']['content']
+
+def _generate_openrouter_response(api_key, chat_history):
+    client = OpenAI(
+        base_url="https://openrouter.ai/api/v1",
+        api_key=api_key,
+    )
+    response = client.chat.completions.create(
+        model=Config.OPENROUTER_LLM,
+        messages=chat_history,
+    )
+    return response.choices[0].message.content

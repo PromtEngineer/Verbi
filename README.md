@@ -224,6 +224,7 @@ If you are running LLM locally via [Ollama](https://ollama.com/), make sure the 
 
 - **OpenAI**: Uses OpenAI's GPT-4 model.
 - **Groq**: Uses Groq's LLaMA model.
+- **OpenRouter**: Uses any model available on OpenRouter (default: Gemini 2.0 Flash).
 - **Ollama**: Uses any model served via Ollama.
 - **Local**: Placeholder for a local language model.
 

@@ -22,7 +22,7 @@ class Config:
     """
     # Model selection
     TRANSCRIPTION_MODEL = 'deepgram'  # possible values: openai, groq, deepgram, fastwhisperapi
-    RESPONSE_MODEL = 'openai'  # possible values: openai, groq, ollama
+    RESPONSE_MODEL = 'openai'  # possible values: openai, groq, ollama, openrouter
     TTS_MODEL = 'openai'  # possible values: openai, deepgram, elevenlabs, melotts, cartesia, piper
 
     # Piper Server configuration
@@ -36,6 +36,7 @@ class Config:
     OLLAMA_LLM="llama3:8b"
     GROQ_LLM="llama3-8b-8192"
     OPENAI_LLM="gpt-4o"
+    OPENROUTER_LLM="google/gemini-2.0-flash-exp:free"
 
     # API keys and paths
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -44,6 +45,11 @@ class Config:
     ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
     LOCAL_MODEL_PATH = os.getenv("LOCAL_MODEL_PATH")
     CARTESIA_API_KEY = os.getenv("CARTESIA_API_KEY")
+<<<<<<< Updated upstream
+=======
+    GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+    OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+>>>>>>> Stashed changes
 
     # for serving the MeloTTS model
     TTS_PORT_LOCAL = 5150
@@ -62,7 +68,7 @@ class Config:
         Config._validate_model('TRANSCRIPTION_MODEL', [
             'openai', 'groq', 'deepgram', 'fastwhisperapi', 'local'])
         Config._validate_model('RESPONSE_MODEL', [
-            'openai', 'groq', 'ollama', 'local'])
+            'openai', 'groq', 'ollama', 'local', 'openrouter'])
         Config._validate_model('TTS_MODEL', [
             'openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local', 'piper'])
 
@@ -72,6 +78,7 @@ class Config:
 
         Config._validate_api_key('RESPONSE_MODEL', 'openai', 'OPENAI_API_KEY')
         Config._validate_api_key('RESPONSE_MODEL', 'groq', 'GROQ_API_KEY')
+        Config._validate_api_key('RESPONSE_MODEL', 'openrouter', 'OPENROUTER_API_KEY')
 
         Config._validate_api_key('TTS_MODEL', 'openai', 'OPENAI_API_KEY')
         Config._validate_api_key('TTS_MODEL', 'deepgram', 'DEEPGRAM_API_KEY')
