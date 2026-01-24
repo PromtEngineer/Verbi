@@ -232,6 +232,7 @@ If you are running LLM locally via [Ollama](https://ollama.com/), make sure the 
 - **OpenAI**: Uses OpenAI's TTS model with the 'fable' voice.
 - **Deepgram**: Uses Deepgram's TTS model with the 'aura-angus-en' voice.
 - **ElevenLabs**: Uses ElevenLabs' TTS model with the 'Paul J.' voice.
+- **Google Gemini**: Uses Google's Gemini 2.0 Flash model with the 'Aoede' voice for text-to-speech generation.
 - **Local**: Placeholder for a local TTS model.
 
 ## Detailed Module Descriptions  📘

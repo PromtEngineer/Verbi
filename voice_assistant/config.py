@@ -21,9 +21,13 @@ class Config:
         LOCAL_MODEL_PATH (str): Path to the local model.
     """
     # Model selection
-    TRANSCRIPTION_MODEL = 'deepgram'  # possible values: openai, groq, deepgram, fastwhisperapi
-    RESPONSE_MODEL = 'openai'  # possible values: openai, groq, ollama
-    TTS_MODEL = 'openai'  # possible values: openai, deepgram, elevenlabs, melotts, cartesia, piper
+    TRANSCRIPTION_MODEL = 'groq'  # possible values: openai, groq, deepgram, fastwhisperapi
+    RESPONSE_MODEL = 'groq'  # possible values: openai, groq, ollama
+    TTS_MODEL = 'gemini'  # possible values: openai, deepgram, elevenlabs, melotts, cartesia, piper, gemini
+
+    # Gemini TTS configuration
+    GEMINI_TTS_MODEL = "gemini-2.5-flash-preview-tts" # https://ai.google.dev/gemini-api/docs/speech-generation#supported-models
+    GEMINI_TTS_VOICE = "Aoede" # https://ai.google.dev/gemini-api/docs/speech-generation#voices
 
     # Piper Server configuration
     PIPER_SERVER_URL = os.getenv("PIPER_SERVER_URL")
@@ -34,7 +38,7 @@ class Config:
 
     # LLM Selection
     OLLAMA_LLM="llama3:8b"
-    GROQ_LLM="llama3-8b-8192"
+    GROQ_LLM="llama-3.3-70b-versatile"  # Updated from decommissioned llama3-8b-8192
     OPENAI_LLM="gpt-4o"
 
     # API keys and paths
@@ -44,6 +48,7 @@ class Config:
     ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
     LOCAL_MODEL_PATH = os.getenv("LOCAL_MODEL_PATH")
     CARTESIA_API_KEY = os.getenv("CARTESIA_API_KEY")
+    GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
     # for serving the MeloTTS model
     TTS_PORT_LOCAL = 5150
@@ -64,7 +69,7 @@ class Config:
         Config._validate_model('RESPONSE_MODEL', [
             'openai', 'groq', 'ollama', 'local'])
         Config._validate_model('TTS_MODEL', [
-            'openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local', 'piper'])
+            'openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local', 'piper', 'gemini'])
 
         Config._validate_api_key('TRANSCRIPTION_MODEL', 'openai', 'OPENAI_API_KEY')
         Config._validate_api_key('TRANSCRIPTION_MODEL', 'groq', 'GROQ_API_KEY')
@@ -77,6 +82,7 @@ class Config:
         Config._validate_api_key('TTS_MODEL', 'deepgram', 'DEEPGRAM_API_KEY')
         Config._validate_api_key('TTS_MODEL', 'elevenlabs', 'ELEVENLABS_API_KEY')
         Config._validate_api_key('TTS_MODEL', 'cartesia', 'CARTESIA_API_KEY')
+        Config._validate_api_key('TTS_MODEL', 'gemini', 'GOOGLE_API_KEY')
 
     @staticmethod
     def _validate_model(attribute, valid_options):

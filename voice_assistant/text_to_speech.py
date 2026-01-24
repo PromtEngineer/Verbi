@@ -5,9 +5,12 @@ import pyaudio
 import elevenlabs
 import soundfile as sf
 import requests
+import wave
+from google import genai
+from google.genai import types
 
 from openai import OpenAI
-from deepgram import DeepgramClient, SpeakOptions
+from deepgram import DeepgramClient
 from elevenlabs.client import ElevenLabs
 from cartesia import Cartesia
 
@@ -41,13 +44,14 @@ def text_to_speech(model: str, api_key:str, text:str, output_file_path:str, loca
 
         elif model == 'deepgram':
             client = DeepgramClient(api_key=api_key)
-            options = SpeakOptions(
-                model="aura-arcas-en", #"aura-luna-en", # https://developers.deepgram.com/docs/tts-models
-                encoding="linear16",
-                container="wav"
+            response = client.speak.v1.audio.generate(
+                text=text,
+                model="aura-arcas-en",  # https://developers.deepgram.com/docs/tts-models
             )
-            SPEAK_OPTIONS = {"text": text}
-            response = client.speak.v("1").save(output_file_path, SPEAK_OPTIONS, options)
+            
+            # Save the audio file
+            with open(output_file_path, "wb") as audio_file:
+                audio_file.write(response.stream.getvalue())
         
         elif model == 'elevenlabs':
             client = ElevenLabs(api_key=api_key)
@@ -58,6 +62,34 @@ def text_to_speech(model: str, api_key:str, text:str, output_file_path:str, loca
                 model="eleven_turbo_v2"
             )
             elevenlabs.save(audio, output_file_path)
+
+        elif model == 'gemini':
+            client = genai.Client(api_key=api_key)
+            
+            response = client.models.generate_content(
+                model=Config.GEMINI_TTS_MODEL,
+                contents=text,
+                config=types.GenerateContentConfig(
+                    response_modalities=["AUDIO"],
+                    speech_config=types.SpeechConfig(
+                        voice_config=types.VoiceConfig(
+                            prebuilt_voice_config=types.PrebuiltVoiceConfig(
+                                voice_name=Config.GEMINI_TTS_VOICE
+                            )
+                        )
+                    )
+                )
+            )
+            
+            # Get PCM audio data and save as proper WAV file with headers
+            audio_data = response.candidates[0].content.parts[0].inline_data.data
+            
+            # Write as WAV file with proper headers (24kHz, 16-bit, mono)
+            with wave.open(output_file_path, "wb") as wf:
+                wf.setnchannels(1)  # mono
+                wf.setsampwidth(2)  # 16-bit
+                wf.setframerate(24000)  # 24kHz sample rate
+                wf.writeframes(audio_data)
         
         elif model == "cartesia":
             client = Cartesia(api_key=api_key)
