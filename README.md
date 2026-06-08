@@ -16,7 +16,7 @@ Welcome to the Voice Assistant project! 🎙️ Our goal is to create a modular 
 ## Features 🧰
 
 - **Modular Design**: Easily switch between different models for transcription, response generation, and TTS.
-- **Support for Multiple APIs**: Integrates with OpenAI, Groq, and Deepgram APIs, along with placeholders for local models.
+- **Support for Multiple APIs**: Integrates with OpenAI, Groq, Deepgram, ElevenLabs, and 60db.ai APIs, along with placeholders for local models.
 - **Audio Recording and Playback**: Record audio from the microphone and play generated speech.
 - **Configuration Management**: Centralized configuration in `config.py` for easy setup and management.
 
@@ -84,6 +84,9 @@ Create a  `.env` file in the root directory and add your API keys:
     OPENAI_API_KEY=your_openai_api_key
     GROQ_API_KEY=your_groq_api_key
     DEEPGRAM_API_KEY=your_deepgram_api_key
+    ELEVENLABS_API_KEY=your_elevenlabs_api_key
+    SIXTYDB_API_KEY=your_60db_api_key
+    SIXTYDB_VOICE_ID=fbb75ed2-975a-40c7-9e06-38e30524a9a1
     LOCAL_MODEL_PATH=path/to/local/model
     PIPER_SERVER_URL=server_url
 ```
@@ -96,12 +99,14 @@ Edit config.py to select the models you want to use:
         # Model selection
         TRANSCRIPTION_MODEL = 'groq'  # Options: 'openai', 'groq', 'deepgram', 'fastwhisperapi' 'local'
         RESPONSE_MODEL = 'groq'       # Options: 'openai', 'groq', 'ollama', 'local'
-        TTS_MODEL = 'deepgram'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local', 'melotts', 'piper'
+        TTS_MODEL = 'deepgram'        # Options: 'openai', 'deepgram', 'elevenlabs', 'sixtydb', 'local', 'melotts', 'piper'
 
         # API keys and paths
         OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
         GROQ_API_KEY = os.getenv("GROQ_API_KEY")
         DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
+        ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
+        SIXTYDB_API_KEY = os.getenv("SIXTYDB_API_KEY")
         LOCAL_MODEL_PATH = os.getenv("LOCAL_MODEL_PATH")
 ```
 
@@ -112,12 +117,19 @@ If you are running LLM locally via [Ollama](https://ollama.com/), make sure the 
 - Follow this [link](https://elevenlabs.io/app/voice-lab/share/de3746fa51a09e771604d74b5d1ff6797b6b96a5958f9de95cef544dde31dad9/WArWzu0z4mbSyy5BfRKM) to add the Jarvis voice to your ElevenLabs account.
 - Name the voice 'Paul J.' or, if you prefer a different name, ensure it matches the ELEVENLABS_VOICE_ID variable in the text_to_speech.py file.
 
-7. 🏃 **Run the voice assistant**
+7. 🔊 **Configure 60db.ai TTS**
+- Sign up at [60db.ai](https://60db.ai) and get your API key from the dashboard.
+- Add `SIXTYDB_API_KEY` to your `.env` file.
+- Optionally, set `SIXTYDB_VOICE_ID` in your `.env` to use a custom voice (defaults to the platform default voice).
+- You can browse your available voices via the [Voices API](https://docs.60db.ai/api-reference/voices/get-my-voices).
+- Set `TTS_MODEL = 'sixtydb'` in `config.py` to use 60db.ai.
+
+8. 🏃 **Run the voice assistant**
 
 ```shell
    python run_voice_assistant.py
 ```
-8. 🎤 **Install FastWhisperAPI**
+9. 🎤 **Install FastWhisperAPI**
 
    _Optional step if you need a local transcription model_
 
@@ -151,7 +163,7 @@ If you are running LLM locally via [Ollama](https://ollama.com/), make sure the 
    ```
    Refer to the repository documentation for the Google Colab method: https://github.com/3choff/FastWhisperAPI/blob/main/README.md
 
-8. 🎤 **Install Local TTS - MeloTTS**
+10. 🎤 **Install Local TTS - MeloTTS**
 
    _Optional step if you need a local Text to Speech model_
 
@@ -167,10 +179,10 @@ If you are running LLM locally via [Ollama](https://ollama.com/), make sure the 
    In order to use the local TTS model, you will need to update the `config.py` file by setting: 
 
    ```shell
-      TTS_MODEL = 'melotts'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local', 'melotts', 'piper'
+      TTS_MODEL = 'melotts'        # Options: 'openai', 'deepgram', 'elevenlabs', 'sixtydb', 'local', 'melotts', 'piper'
    ```
 
-9. 🎤 **Install Local TTS - Piper**
+11. 🎤 **Install Local TTS - Piper**
 
    _A faster and lightweight alternative to MeloTTS_
 
@@ -206,7 +218,7 @@ If you are running LLM locally via [Ollama](https://ollama.com/), make sure the 
    In order to use the local TTS model, you will need to update the `config.py` file by setting: 
 
    ```shell
-      TTS_MODEL = 'piper'        # Options: 'openai', 'deepgram', 'elevenlabs', 'local', 'melotts','piper'
+      TTS_MODEL = 'piper'        # Options: 'openai', 'deepgram', 'elevenlabs', 'sixtydb', 'local', 'melotts','piper'
    ```
    You can run the main file to start using verbi with local models. 
 
@@ -232,6 +244,10 @@ If you are running LLM locally via [Ollama](https://ollama.com/), make sure the 
 - **OpenAI**: Uses OpenAI's TTS model with the 'fable' voice.
 - **Deepgram**: Uses Deepgram's TTS model with the 'aura-angus-en' voice.
 - **ElevenLabs**: Uses ElevenLabs' TTS model with the 'Paul J.' voice.
+- **60db.ai**: Uses 60db.ai's TTS API with the default voice (configurable via `SIXTYDB_VOICE_ID`). Supports multiple languages including English and Indic languages (Hindi, Bengali, Tamil, etc.).
+- **Cartesia**: Uses Cartesia's Sonic English model with real-time streaming playback.
+- **MeloTTS**: Uses the local MeloTTS model (requires local setup).
+- **Piper**: Uses the local Piper model — a fast and lightweight alternative (requires local setup).
 - **Local**: Placeholder for a local TTS model.
 
 ## Detailed Module Descriptions  📘
@@ -253,7 +269,7 @@ If you are running LLM locally via [Ollama](https://ollama.com/), make sure the 
 Here's what's next for the Voice Assistant project:
 
 1. **Add Support for Streaming**: Enable real-time streaming of audio input and output.
-2. **Add Support for ElevenLabs and Enhanced Deepgram for TTS**: Integrate additional TTS options for higher quality and variety.
+2. ~~**Add Support for ElevenLabs and Enhanced Deepgram for TTS**~~: Integrated ElevenLabs, 60db.ai, and Cartesia TTS options. ✅
 3. **Add Filler Audios**: Include background or filler audios while waiting for model responses to enhance user experience.
 4. **Add Support for Local Models Across the Board**: Expand support for local models in transcription, response generation, and TTS.
 

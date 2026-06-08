@@ -13,17 +13,19 @@ class Config:
     Attributes:
         TRANSCRIPTION_MODEL (str): The model to use for transcription ('openai', 'groq', 'deepgram', 'fastwhisperapi', 'local').
         RESPONSE_MODEL (str): The model to use for response generation ('openai', 'groq', 'local').
-        TTS_MODEL (str): The model to use for text-to-speech ('openai', 'deepgram', 'elevenlabs', 'local').
+        TTS_MODEL (str): The model to use for text-to-speech ('openai', 'deepgram', 'elevenlabs', 'sixtydb', 'local').
         OPENAI_API_KEY (str): API key for OpenAI services.
         GROQ_API_KEY (str): API key for Groq services.
         DEEPGRAM_API_KEY (str): API key for Deepgram services.
         ELEVENLABS_API_KEY (str): API key for ElevenLabs services.
+        SIXTYDB_API_KEY (str): API key for 60db.ai services.
+        SIXTYDB_VOICE_ID (str): Voice ID for 60db.ai TTS.
         LOCAL_MODEL_PATH (str): Path to the local model.
     """
     # Model selection
     TRANSCRIPTION_MODEL = 'deepgram'  # possible values: openai, groq, deepgram, fastwhisperapi
     RESPONSE_MODEL = 'openai'  # possible values: openai, groq, ollama
-    TTS_MODEL = 'openai'  # possible values: openai, deepgram, elevenlabs, melotts, cartesia, piper
+    TTS_MODEL = 'openai'  # possible values: openai, deepgram, elevenlabs, sixtydb, melotts, cartesia, piper
 
     # Piper Server configuration
     PIPER_SERVER_URL = os.getenv("PIPER_SERVER_URL")
@@ -42,6 +44,8 @@ class Config:
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
     DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
     ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
+    SIXTYDB_API_KEY = os.getenv("SIXTYDB_API_KEY")
+    SIXTYDB_VOICE_ID = os.getenv("SIXTYDB_VOICE_ID", "fbb75ed2-975a-40c7-9e06-38e30524a9a1")
     LOCAL_MODEL_PATH = os.getenv("LOCAL_MODEL_PATH")
     CARTESIA_API_KEY = os.getenv("CARTESIA_API_KEY")
 
@@ -64,7 +68,7 @@ class Config:
         Config._validate_model('RESPONSE_MODEL', [
             'openai', 'groq', 'ollama', 'local'])
         Config._validate_model('TTS_MODEL', [
-            'openai', 'deepgram', 'elevenlabs', 'melotts', 'cartesia', 'local', 'piper'])
+            'openai', 'deepgram', 'elevenlabs', 'sixtydb', 'melotts', 'cartesia', 'local', 'piper'])
 
         Config._validate_api_key('TRANSCRIPTION_MODEL', 'openai', 'OPENAI_API_KEY')
         Config._validate_api_key('TRANSCRIPTION_MODEL', 'groq', 'GROQ_API_KEY')
@@ -76,6 +80,7 @@ class Config:
         Config._validate_api_key('TTS_MODEL', 'openai', 'OPENAI_API_KEY')
         Config._validate_api_key('TTS_MODEL', 'deepgram', 'DEEPGRAM_API_KEY')
         Config._validate_api_key('TTS_MODEL', 'elevenlabs', 'ELEVENLABS_API_KEY')
+        Config._validate_api_key('TTS_MODEL', 'sixtydb', 'SIXTYDB_API_KEY')
         Config._validate_api_key('TTS_MODEL', 'cartesia', 'CARTESIA_API_KEY')
 
     @staticmethod

@@ -65,7 +65,7 @@ def main():
             chat_history.append({"role": "assistant", "content": response_text})
 
             # Determine the output file format based on the TTS model
-            if Config.TTS_MODEL == 'openai' or Config.TTS_MODEL == 'elevenlabs' or Config.TTS_MODEL == 'melotts' or Config.TTS_MODEL == 'cartesia':
+            if Config.TTS_MODEL == 'openai' or Config.TTS_MODEL == 'elevenlabs' or Config.TTS_MODEL == 'sixtydb' or Config.TTS_MODEL == 'melotts' or Config.TTS_MODEL == 'cartesia':
                 output_file = 'output.mp3'
             else:
                 output_file = 'output.wav'

@@ -1,6 +1,7 @@
 # voice_assistant/text_to_speech.py
 import logging
 import json
+import base64
 import pyaudio
 import elevenlabs
 import soundfile as sf
@@ -58,6 +59,34 @@ def text_to_speech(model: str, api_key:str, text:str, output_file_path:str, loca
                 model="eleven_turbo_v2"
             )
             elevenlabs.save(audio, output_file_path)
+
+        elif model == 'sixtydb':
+            response = requests.post(
+                "https://api.60db.ai/tts-synthesize",
+                headers={
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json"
+                },
+                json={
+                    "text": text,
+                    "voice_id": Config.SIXTYDB_VOICE_ID,
+                    "enhance": True,
+                    "speed": 1,
+                    "stability": 50,
+                    "similarity": 75,
+                    "output_format": "mp3"
+                }
+            )
+            response.raise_for_status()
+            data = response.json()
+
+            if not data.get("success"):
+                raise ValueError(f"60db TTS failed: {data.get('message', 'Unknown error')}")
+
+            audio_bytes = base64.b64decode(data["audio_base64"])
+            with open(output_file_path, "wb") as f:
+                f.write(audio_bytes)
+            logging.info(f"60db TTS audio saved to {output_file_path} ({data.get('duration_seconds', '?')}s)")
         
         elif model == "cartesia":
             client = Cartesia(api_key=api_key)
