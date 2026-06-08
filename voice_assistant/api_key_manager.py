@@ -15,7 +15,8 @@ API_KEY_MAPPING= {
     "tts": {
         "openai": Config.OPENAI_API_KEY,
         "deepgram":Config.DEEPGRAM_API_KEY,
-        "elevenlabs": Config.ELEVENLABS_API_KEY
+        "elevenlabs": Config.ELEVENLABS_API_KEY,
+        "sixtydb": Config.SIXTYDB_API_KEY
     }
 }
 
